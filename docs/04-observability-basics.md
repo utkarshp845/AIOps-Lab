@@ -27,3 +27,40 @@ Observability starts with three questions:
 
 The AI assistant is only useful when these signals are clear.
 
+## Metrics Cleanup
+
+Week 2 starts by making metrics stable and teachable.
+
+`demo-service` exposes counters and latency buckets:
+
+- `demo_service_http_requests_total`
+- `demo_service_http_request_duration_seconds_bucket`
+- `demo_service_http_request_duration_seconds_sum`
+- `demo_service_http_request_duration_seconds_count`
+- `demo_service_simulated_errors_total`
+- `demo_service_simulated_latency_events_total`
+- `demo_service_memory_pressure_events_total`
+
+Counters answer "how many times did this happen?"
+
+Latency buckets answer "how often did requests finish under useful thresholds?"
+
+## Label Cardinality
+
+Metrics labels should stay low-cardinality. This means labels should not contain unbounded values such as request IDs, user IDs, or order IDs.
+
+Bad:
+
+```text
+path="/api/orders/ord-1001"
+path="/api/orders/ord-1002"
+path="/api/orders/ord-1003"
+```
+
+Better:
+
+```text
+path="/api/orders/{order_id}"
+```
+
+The cleaned-up metrics use FastAPI route templates where possible so dynamic IDs do not explode the number of time series.
