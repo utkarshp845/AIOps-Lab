@@ -5,6 +5,7 @@ import random
 from fastapi import APIRouter, HTTPException, Query
 
 from app.logging_config import get_log_path, logger
+from app.metrics import METRICS
 
 
 router = APIRouter()
@@ -72,6 +73,10 @@ def simulate_error(
 ) -> dict:
     roll = random.random()
     if roll < probability:
+        METRICS.record_simulated_error(
+            endpoint="/simulate/error",
+            error_type="checkout_dependency_timeout",
+        )
         logger.error(
             "simulated_checkout_failure",
             extra={
@@ -107,6 +112,7 @@ async def simulate_latency(
 
     latency_ms = random.randint(min_ms, max_ms)
     await asyncio.sleep(latency_ms / 1000)
+    METRICS.record_simulated_latency(endpoint="/simulate/latency")
     log_method = logger.warning if latency_ms >= 1000 else logger.info
     log_method(
         "simulated_latency",
@@ -119,6 +125,7 @@ async def simulate_latency(
 def simulate_memory_pressure(size_mb: int = Query(default=12, ge=1, le=64)) -> dict:
     chunks = [bytearray(1024 * 1024) for _ in range(size_mb)]
     allocated_mb = sum(len(chunk) for chunk in chunks) // (1024 * 1024)
+    METRICS.record_memory_pressure(endpoint="/simulate/memory-pressure")
 
     logger.warning(
         "simulated_memory_pressure",
