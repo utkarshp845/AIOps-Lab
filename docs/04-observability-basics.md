@@ -101,3 +101,21 @@ Useful structured log fields:
 - `error_type`: stable error category when a failure is known.
 
 The goal is not to log everything. The goal is to log enough consistent evidence that a human or AI assistant can separate facts from guesses.
+
+## Incident Walkthroughs
+
+The next step is using logs and metrics together.
+
+Start with:
+
+- [Error spike](incidents/01-error-spike.md)
+- [Latency spike](incidents/02-latency-spike.md)
+- [Memory pressure](incidents/03-memory-pressure.md)
+
+Each walkthrough follows the same operator pattern:
+
+```text
+Symptom -> Metrics evidence -> Log evidence -> Likely cause -> Safe next steps
+```
+
+That pattern is also the intended behavior for the AI SRE Assistant.

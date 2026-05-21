@@ -20,6 +20,7 @@ local app -> AI service -> logs/metrics -> AI SRE assistant -> observability -> 
 - `ai-sre-assistant`: a FastAPI service and CLI that reads the demo logs and explains incidents.
 - Docker Compose wiring so both services share the same log file locally.
 - Tests, sample logs, docs, and a 30-day roadmap for building in public.
+- Incident walkthroughs that show how to reason from symptoms, metrics, logs, and safe next steps.
 
 ## Architecture
 
@@ -85,6 +86,7 @@ ai-infra-starter-kit/
     demo-service/        # FastAPI app that emits health, failure, latency, logs, and metrics
     ai-sre-assistant/    # FastAPI app and CLI that analyze demo-service logs
   docs/                  # Learning path and production notes
+    incidents/           # Guided operational debugging examples
   infra/                 # Docker, Kubernetes, and Terraform starter notes
   scripts/               # Local traffic and log helper scripts
   examples/              # Sample logs and questions

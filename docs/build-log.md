@@ -95,3 +95,40 @@ What comes next:
 - Add incident walkthroughs that combine logs and metrics.
 - Teach the AI SRE Assistant to summarize metrics alongside logs.
 - Keep the local workflow simple while gradually introducing production habits.
+
+## Week 2, Day 3 - Incident Walkthroughs
+
+Today I added incident walkthroughs.
+
+Day 1 cleaned up metrics.
+
+Day 2 improved structured logs and request correlation.
+
+Day 3 connects those signals into operational reasoning.
+
+What changed:
+
+- Added an incident walkthrough index.
+- Added an error spike walkthrough.
+- Added a latency spike walkthrough.
+- Added a memory pressure walkthrough.
+- Linked the walkthroughs from the observability basics doc.
+
+Why this matters:
+
+Observability is only useful if it helps someone debug.
+
+Metrics can show that something changed. Logs can explain what happened in a specific request. Request IDs connect related log lines. Incident walkthroughs show how to combine those signals instead of looking at them in isolation.
+
+Lessons learned:
+
+- A good incident workflow starts with symptoms and evidence, not guesses.
+- Metrics and logs answer different questions.
+- Request IDs make logs more useful during debugging.
+- The AI SRE Assistant should follow the same reasoning pattern: facts, evidence, likely causes, safe next steps.
+
+What comes next:
+
+- Teach the AI SRE Assistant to read metrics.
+- Let incident summaries combine log evidence and metric evidence.
+- Add optional Prometheus and Grafana without making them required for Day 1.
