@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-infra-starter-kit-config
+  namespace: ai-infra-starter-kit
+  labels:
+    app.kubernetes.io/name: ai-infra-starter-kit-config
+    app.kubernetes.io/part-of: ai-infra-starter-kit
+data:
+  DEMO_SERVICE_LOG_PATH: /shared/logs/demo-service.log
+  DEMO_SERVICE_METRICS_URL: http://demo-service:8000/metrics
+  LLM_PROVIDER: none
+  OPENAI_BASE_URL: https://api.openai.com/v1
+  MODEL_NAME: gpt-4o-mini
+
