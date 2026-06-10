@@ -174,3 +174,49 @@ What comes next:
 - Improve combined incident summaries with richer examples.
 - Add optional Prometheus and Grafana for people ready to see metrics in a dashboard.
 - Keep the default local path small and laptop-friendly.
+
+## Week 3, Day 1 - Kubernetes Manifests With kind
+
+Today I started Week 3: Kubernetes basics.
+
+Week 1 built the local learning lab.
+
+Week 2 added observability signals and taught the AI SRE Assistant to read logs and metrics.
+
+Week 3 starts with the same system running in a new runtime.
+
+What changed:
+
+- Added a dedicated Kubernetes namespace.
+- Added a ConfigMap for normal app configuration.
+- Added an optional Secret example for future LLM keys.
+- Added kind-friendly shared log storage for the local learning path.
+- Cleaned up the demo-service and AI SRE Assistant manifests.
+- Added consistent Kubernetes labels.
+- Kept one replica per app to avoid shared-volume confusion.
+- Rewrote the Kubernetes README as a kind-first walkthrough.
+
+Why this matters:
+
+Kubernetes adds complexity, but the system shape is the same:
+
+```text
+demo-service -> logs/metrics -> ai-sre-assistant -> operational summary
+```
+
+The point is not to introduce the whole Kubernetes ecosystem at once. The point is to map the working Docker Compose lab onto Kubernetes primitives: Deployments, Services, ConfigMaps, Secrets, probes, resources, and storage.
+
+Lessons learned:
+
+- Kubernetes is easier to teach when it is tied to a concrete app.
+- A Service gives the assistant a stable name for `demo-service`.
+- ConfigMaps are a cleaner home for normal environment variables.
+- Secrets should be separate, even when the first version works without one.
+- Shared file logs are useful for learning, but production should use a real log pipeline.
+
+What comes next:
+
+- Add a local Kubernetes deployment guide as a standalone doc.
+- Spend a day on config and secrets.
+- Spend a day on health checks, readiness, liveness, and resource limits.
+- Then connect Kubernetes logs and metrics back into the observability story.

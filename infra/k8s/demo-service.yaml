@@ -1,52 +1,56 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: demo-service-logs
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo-service
+  namespace: ai-infra-starter-kit
+  labels:
+    app.kubernetes.io/name: demo-service
+    app.kubernetes.io/part-of: ai-infra-starter-kit
+    app.kubernetes.io/component: demo-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo-service
+      app.kubernetes.io/name: demo-service
   template:
     metadata:
       labels:
-        app: demo-service
+        app.kubernetes.io/name: demo-service
+        app.kubernetes.io/part-of: ai-infra-starter-kit
+        app.kubernetes.io/component: demo-api
     spec:
       containers:
         - name: demo-service
           image: ai-infra-starter-kit/demo-service:local
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8000
+            - name: http
+              containerPort: 8000
           env:
             - name: DEMO_SERVICE_LOG_PATH
-              value: /shared/logs/demo-service.log
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-infra-starter-kit-config
+                  key: DEMO_SERVICE_LOG_PATH
           volumeMounts:
             - name: demo-logs
               mountPath: /shared/logs
           readinessProbe:
             httpGet:
               path: /ready
-              port: 8000
+              port: http
             initialDelaySeconds: 5
             periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: http
             initialDelaySeconds: 10
             periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
           resources:
             requests:
               cpu: 100m
@@ -63,11 +67,16 @@ apiVersion: v1
 kind: Service
 metadata:
   name: demo-service
+  namespace: ai-infra-starter-kit
+  labels:
+    app.kubernetes.io/name: demo-service
+    app.kubernetes.io/part-of: ai-infra-starter-kit
+    app.kubernetes.io/component: demo-api
 spec:
+  type: ClusterIP
   selector:
-    app: demo-service
+    app.kubernetes.io/name: demo-service
   ports:
     - name: http
       port: 8000
-      targetPort: 8000
-
+      targetPort: http

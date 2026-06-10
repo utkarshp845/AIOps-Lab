@@ -70,6 +70,8 @@ Useful local URLs:
 - AI SRE Assistant: `http://localhost:8001`
 - AI SRE health: `http://localhost:8001/health`
 
+For the kind-based Kubernetes walkthrough, see `infra/k8s/README.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -104,6 +106,7 @@ ai-infra-starter-kit/
   docs/                  # Learning path and production notes
     incidents/           # Guided operational debugging examples
   infra/                 # Docker, Kubernetes, and Terraform starter notes
+    k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts
   examples/              # Sample logs and questions
 ```
