@@ -220,3 +220,40 @@ What comes next:
 - Spend a day on config and secrets.
 - Spend a day on health checks, readiness, liveness, and resource limits.
 - Then connect Kubernetes logs and metrics back into the observability story.
+
+## Week 3, Day 3 - Kubernetes Operations Runbook
+
+Today I added a Kubernetes operations runbook for the local kind setup.
+
+Day 1 mapped the Docker Compose learning lab into Kubernetes manifests.
+
+Day 3 focuses on the next practical question: once the pods are running, how do you inspect the system without guessing?
+
+What changed:
+
+- Added a Kubernetes operations runbook.
+- Documented quick status checks for Deployments, Pods, Services, and PVCs.
+- Added health, readiness, metrics, and assistant analysis checks.
+- Added troubleshooting flows for `ImagePullBackOff`, pods that are running but not ready, missing logs, missing metrics, pending PVCs, and port-forward issues.
+- Added a safe debugging order that starts with read-only inspection.
+- Linked the runbook from the root README and Kubernetes walkthrough.
+
+Why this matters:
+
+Kubernetes is easier to learn when each command answers a specific operational question.
+
+`kubectl get pods` is not just a command to memorize. It answers whether the workload exists and what state Kubernetes sees. `kubectl describe` explains scheduling, probes, mounts, and events. `kubectl logs` shows what the app says happened. The assistant analysis brings the application signals back into the same workflow.
+
+Lessons learned:
+
+- Kubernetes debugging should start with evidence, not restarts.
+- Pod status, readiness, service endpoints, and application health are related but different signals.
+- A Service can exist even when no ready pods are behind it.
+- The shared log PVC is useful for learning, but production logging needs a real pipeline.
+- The AI SRE Assistant remains more useful when it can cite logs and metrics instead of guessing.
+
+What comes next:
+
+- Spend a focused day on ConfigMaps, Secrets, and environment-specific configuration.
+- Expand the health check and resource limit explanation.
+- Keep the kind path simple before introducing Helm, Ingress, or observability stacks.
