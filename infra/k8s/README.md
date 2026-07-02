@@ -122,6 +122,8 @@ Inspect what is running:
 kubectl get pods,svc,pvc -n ai-infra-starter-kit
 ```
 
+For a more complete operations and troubleshooting checklist, see `../../docs/10-kubernetes-operations-runbook.md`.
+
 ## 6. Port Forward Services
 
 Open one terminal for `demo-service`:

@@ -72,6 +72,8 @@ Useful local URLs:
 
 For the kind-based Kubernetes walkthrough, see `infra/k8s/README.md`.
 
+For a practical Kubernetes operations checklist, see `docs/10-kubernetes-operations-runbook.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -105,6 +107,7 @@ ai-infra-starter-kit/
     ai-sre-assistant/    # FastAPI app and CLI that analyze demo-service logs
   docs/                  # Learning path and production notes
     incidents/           # Guided operational debugging examples
+    10-kubernetes-operations-runbook.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts
