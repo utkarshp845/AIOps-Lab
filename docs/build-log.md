@@ -328,3 +328,36 @@ What comes next:
 - Connect Kubernetes events, logs, and assistant analysis into a clearer incident workflow.
 - Add a small Kubernetes troubleshooting example using the existing simulated failure endpoints.
 - Keep autoscaling and HPA for after resource requests are easier to understand.
+
+## Week 3, Day 6 - Kubernetes Incident Debugging
+
+Today I connected the Kubernetes learning path into an incident debugging workflow.
+
+Day 5 focused on probes and resources. Day 6 focuses on what to do when the app is running in Kubernetes but the service still shows failures, latency, or warning signals.
+
+What changed:
+
+- Added a Kubernetes incident debugging walkthrough.
+- Documented how to create intentional symptoms with existing simulation endpoints.
+- Added a debugging order from Kubernetes state to app health, logs, metrics, and assistant analysis.
+- Added commands for inspecting Deployments, Pods, Services, endpoints, PVCs, events, logs, metrics, and assistant summaries.
+- Added a debugging map that connects symptoms to first checks and likely interpretations.
+- Linked the walkthrough from the README, Kubernetes walkthrough, and operations runbook.
+
+Why this matters:
+
+Kubernetes can tell you what is happening to the workload, but it does not automatically explain what is happening inside the application. Logs and metrics provide that application evidence. The AI SRE Assistant helps summarize those signals into practical operational language.
+
+Lessons learned:
+
+- Start broad with Kubernetes state before narrowing into app behavior.
+- A healthy pod can still serve failing endpoints.
+- Logs explain specific events; metrics explain shape and volume.
+- Assistant output is most useful when it is grounded in collected evidence.
+- Good debugging starts with facts before fixes.
+
+What comes next:
+
+- Wrap Week 3 with production-minded Kubernetes next steps.
+- Explain what should change before this pattern becomes production-grade.
+- Keep advanced tools like Helm, Ingress, HPA, and service mesh as future roadmap items.

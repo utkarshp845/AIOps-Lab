@@ -126,6 +126,8 @@ For a more complete operations and troubleshooting checklist, see `../../docs/10
 
 For a focused guide to probes and resource requests/limits, see `../../docs/12-kubernetes-health-and-resources.md`.
 
+For an end-to-end incident debugging walkthrough, see `../../docs/13-kubernetes-incident-debugging.md`.
+
 ## 6. Port Forward Services
 
 Open one terminal for `demo-service`:

@@ -110,6 +110,8 @@ traffic -> demo-service logs/metrics -> ai-sre-assistant analysis
 
 Kubernetes changes the runtime, not the operational reasoning model.
 
+For an end-to-end incident walkthrough that uses these signals together, see `13-kubernetes-incident-debugging.md`.
+
 ## Read Kubernetes Logs
 
 View recent logs from each Deployment:

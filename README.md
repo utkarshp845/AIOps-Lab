@@ -78,6 +78,8 @@ For Kubernetes config and secrets basics, see `docs/11-kubernetes-config-and-sec
 
 For Kubernetes probes and resource basics, see `docs/12-kubernetes-health-and-resources.md`.
 
+For a Kubernetes incident debugging walkthrough, see `docs/13-kubernetes-incident-debugging.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -114,6 +116,7 @@ ai-infra-starter-kit/
     10-kubernetes-operations-runbook.md
     11-kubernetes-config-and-secrets.md
     12-kubernetes-health-and-resources.md
+    13-kubernetes-incident-debugging.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts
