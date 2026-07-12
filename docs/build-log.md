@@ -361,3 +361,37 @@ What comes next:
 - Wrap Week 3 with production-minded Kubernetes next steps.
 - Explain what should change before this pattern becomes production-grade.
 - Keep advanced tools like Helm, Ingress, HPA, and service mesh as future roadmap items.
+
+## Week 3, Day 7 - Kubernetes Production Next Steps
+
+Today I closed out Week 3 by documenting what the local Kubernetes path teaches and what still needs to change before anything looks production-grade.
+
+Day 6 connected Kubernetes state, app health, logs, metrics, and assistant analysis into an incident debugging workflow. Day 7 turns that into production-minded next steps.
+
+What changed:
+
+- Added a Kubernetes production next-steps guide.
+- Documented which choices are local-only learning defaults.
+- Mapped local shortcuts to production alternatives.
+- Expanded the production considerations doc.
+- Updated the roadmap to reflect Week 3 completion and Week 4 direction.
+- Linked the new guide from the README, Kubernetes walkthrough, and incident debugging guide.
+
+Why this matters:
+
+The project should be beginner-friendly without pretending the local kind setup is production architecture. Week 3 taught the primitives: Deployments, Pods, Services, ConfigMaps, Secrets, PVCs, probes, resources, logs, metrics, and incident flow. Day 7 explains what comes next without rushing into every Kubernetes tool at once.
+
+Lessons learned:
+
+- Local Kubernetes is useful when the app stays concrete.
+- Shared file logs are a learning bridge, not a production logging design.
+- One replica keeps the lesson simple, but production needs stateless scaling patterns.
+- Kubernetes Secrets teach the primitive, but production needs stronger secret management.
+- Advanced tools should arrive only after the problem they solve is visible.
+
+What comes next:
+
+- Start Week 4 with security hardening basics.
+- Add secret handling and redaction rules.
+- Introduce cost optimization and assistant evaluation basics.
+- Keep vLLM, Triton, Ray, KServe, and GPU scheduling as optional advanced roadmap items.

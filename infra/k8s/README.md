@@ -128,6 +128,8 @@ For a focused guide to probes and resource requests/limits, see `../../docs/12-k
 
 For an end-to-end incident debugging walkthrough, see `../../docs/13-kubernetes-incident-debugging.md`.
 
+For local-vs-production Kubernetes next steps, see `../../docs/14-kubernetes-production-next-steps.md`.
+
 ## 6. Port Forward Services
 
 Open one terminal for `demo-service`:

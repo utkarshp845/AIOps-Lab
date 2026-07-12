@@ -80,6 +80,8 @@ For Kubernetes probes and resource basics, see `docs/12-kubernetes-health-and-re
 
 For a Kubernetes incident debugging walkthrough, see `docs/13-kubernetes-incident-debugging.md`.
 
+For Kubernetes production next steps, see `docs/14-kubernetes-production-next-steps.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -117,6 +119,7 @@ ai-infra-starter-kit/
     11-kubernetes-config-and-secrets.md
     12-kubernetes-health-and-resources.md
     13-kubernetes-incident-debugging.md
+    14-kubernetes-production-next-steps.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts
@@ -145,8 +148,8 @@ You should see the assistant report intentionally generated 500s, latency spikes
 
 - Week 1: local demo-service, AI SRE Assistant, Docker Compose, sample logs, basic README.
 - Week 2: observability basics, metrics, dashboards, structured logging, incident examples.
-- Week 3: Kubernetes manifests, deployment walkthrough, config/secrets, health checks, resource limits.
-- Week 4: security hardening, cost optimization, evaluation basics, optional advanced serving path with vLLM, Triton, and KServe.
+- Week 3: Kubernetes manifests, operations, config/secrets, probes/resources, incident debugging, production next steps.
+- Week 4: security hardening, cost optimization, evaluation basics, production observability, optional advanced serving path with vLLM, Triton, Ray, KServe, and GPU scheduling.
 
 ## Build In Public
 

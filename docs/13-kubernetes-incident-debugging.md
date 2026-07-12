@@ -262,3 +262,5 @@ A production version would replace or extend parts of this local workflow:
 - assistant summaries would need evaluation, access control, and auditability.
 
 For Day 6, the important habit is evidence order: collect facts before changing the system.
+
+For the Week 3 production next-steps wrap-up, see `14-kubernetes-production-next-steps.md`.
