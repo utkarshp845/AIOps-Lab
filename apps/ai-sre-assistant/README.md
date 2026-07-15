@@ -60,10 +60,25 @@ LLM_PROVIDER=openai
 OPENAI_API_KEY=your_key
 OPENAI_BASE_URL=https://api.openai.com/v1
 MODEL_NAME=your_model
+LLM_MAX_LOG_ENTRIES=50
+LLM_MAX_PROMPT_CHARS=12000
 DEMO_SERVICE_METRICS_URL=http://localhost:8000/metrics
 ```
 
 For local Ollama experiments, set `LLM_PROVIDER=ollama` and use an OpenAI-compatible Ollama base URL.
+
+## Cost Controls
+
+The rule-based analyzer remains the lowest-cost path. Keep `LLM_PROVIDER=none` or set `use_llm=false` on requests when LLM enrichment is not needed.
+
+When an LLM provider is enabled, the assistant limits provider prompts with:
+
+- `LLM_MAX_LOG_ENTRIES`: how many recent log records can be included in the prompt.
+- `LLM_MAX_PROMPT_CHARS`: maximum assembled user prompt size before the provider request.
+
+API responses that attempt LLM enrichment include `llm_cost_controls` so callers can see which limits were active. If prompt evidence is truncated, the response includes an `llm_notice`.
+
+See `../../docs/16-cost-optimization.md` for the Day 3 cost optimization guide.
 
 ## Redaction
 

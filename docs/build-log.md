@@ -464,3 +464,42 @@ What comes next:
 
 - Continue Week 4 with practical cost optimization habits.
 - Keep assistant evaluation basics next so safety and usefulness can be tested together.
+
+## Week 4, Day 3 - Cost Optimization Basics
+
+Today I added the first practical cost controls for the AI SRE Assistant.
+
+Day 1 named the security risks. Day 2 enforced redaction. Day 3 focuses on a different production habit: make optional LLM usage explicit, bounded, and easy to turn off.
+
+What changed:
+
+- Kept the deterministic rule-based analyzer as the default no-cost path.
+- Added `LLM_MAX_LOG_ENTRIES` to limit how many recent logs can enter an LLM prompt.
+- Added `LLM_MAX_PROMPT_CHARS` to cap the assembled provider prompt.
+- Added prompt truncation notices when cost controls reduce evidence size.
+- Added `llm_cost_controls` metadata to API responses that attempt LLM enrichment.
+- Wired the defaults through `.env.example`, Docker Compose, and the Kubernetes ConfigMap.
+- Added tests for environment parsing, log-window limits, prompt-size limits, and API cost-control metadata.
+- Added a dedicated cost optimization guide and linked it from the README and assistant docs.
+- Updated the security guide to connect cost controls with reduced provider data exposure.
+
+Why this matters:
+
+AI infrastructure cost can grow before a billing dashboard exists. A single incident summary may be cheap, but repeated provider calls, large log windows, large prompts, expensive models, and broad refresh loops can turn the same workflow into a cost problem.
+
+The safest beginner default is still local rule-based analysis. When LLM enrichment is useful, the assistant now sends a bounded amount of evidence and tells callers which limits were active.
+
+Lessons learned:
+
+- Cost optimization starts at the call boundary.
+- The cheapest provider request is the one you do not need to make.
+- A smaller prompt usually means lower cost, lower latency, and lower exposure.
+- Character limits are not exact token accounting, but they are useful as beginner guardrails.
+- Cost controls should be visible in API responses, not hidden in configuration.
+- Security and cost optimization often point in the same direction: send less unnecessary data.
+
+What comes next:
+
+- Add assistant evaluation basics so usefulness, safety, and cost can be checked together.
+- Consider provider usage metadata when a provider returns token counts.
+- Keep dashboards, caching, quotas, and model routing as later steps after the simple controls are understood.

@@ -62,7 +62,7 @@ Before enabling an external provider:
 - review the log fields and retention policy.
 - verify that the data is allowed to leave the environment.
 - review the provider's current data handling and retention terms.
-- send the minimum useful number of log lines.
+- send the minimum useful number of log lines with `LLM_MAX_LOG_ENTRIES`.
 - use a scoped, rotatable credential.
 - treat `[REDACTED]` as a signal that context was intentionally removed; do not ask the model to reconstruct it.
 
@@ -99,4 +99,4 @@ cd apps/ai-sre-assistant
 python -m pytest -q
 ```
 
-See `07-security.md` for the broader threat model and `../SECURITY.md` for vulnerability reporting.
+See `07-security.md` for the broader threat model, `16-cost-optimization.md` for prompt budget controls, and `../SECURITY.md` for vulnerability reporting.

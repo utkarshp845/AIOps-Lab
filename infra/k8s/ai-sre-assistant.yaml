@@ -42,6 +42,16 @@ spec:
                 configMapKeyRef:
                   name: ai-infra-starter-kit-config
                   key: MODEL_NAME
+            - name: LLM_MAX_LOG_ENTRIES
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-infra-starter-kit-config
+                  key: LLM_MAX_LOG_ENTRIES
+            - name: LLM_MAX_PROMPT_CHARS
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-infra-starter-kit-config
+                  key: LLM_MAX_PROMPT_CHARS
             - name: DEMO_SERVICE_LOG_PATH
               valueFrom:
                 configMapKeyRef:

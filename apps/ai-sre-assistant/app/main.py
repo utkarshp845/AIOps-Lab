@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
 from app.analyzer import analyze_logs
-from app.llm import analyze_with_llm
+from app.llm import analyze_with_llm, cost_controls_summary, load_config
 from app.log_reader import get_log_path, read_recent_logs
 from app.metrics_analyzer import analyze_metrics, combined_incident_analysis
 from app.metrics_reader import fetch_metrics_text, get_metrics_url, parse_prometheus_text
@@ -89,7 +89,14 @@ def summarize_incident(request: SummarizeIncidentRequest) -> dict[str, Any]:
     }
 
     if request.use_llm:
-        llm_analysis, llm_notice = analyze_with_llm(question=question, logs=[], rule_based_analysis=response)
+        llm_config = load_config()
+        response["llm_cost_controls"] = cost_controls_summary(llm_config)
+        llm_analysis, llm_notice = analyze_with_llm(
+            question=question,
+            logs=[],
+            rule_based_analysis=response,
+            config=llm_config,
+        )
         if llm_analysis:
             response["analysis_mode"] = "llm"
             response["llm_analysis"] = llm_analysis
@@ -114,7 +121,14 @@ def _analyze(question: str, max_lines: int, use_llm: bool) -> dict[str, Any]:
     }
 
     if use_llm:
-        llm_analysis, llm_notice = analyze_with_llm(question=question, logs=logs, rule_based_analysis=rule_based)
+        llm_config = load_config()
+        response["llm_cost_controls"] = cost_controls_summary(llm_config)
+        llm_analysis, llm_notice = analyze_with_llm(
+            question=question,
+            logs=logs,
+            rule_based_analysis=rule_based,
+            config=llm_config,
+        )
         if llm_analysis:
             response["analysis_mode"] = "llm"
             response["llm_analysis"] = llm_analysis

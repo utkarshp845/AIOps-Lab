@@ -34,6 +34,8 @@ Current values:
 | `LLM_PROVIDER` | Controls whether the assistant uses rule-based analysis, OpenAI-compatible APIs, or Ollama. |
 | `OPENAI_BASE_URL` | Stores the OpenAI-compatible API base URL. |
 | `MODEL_NAME` | Stores the model name used when an LLM provider is enabled. |
+| `LLM_MAX_LOG_ENTRIES` | Bounds how many recent log records can enter an optional LLM prompt. |
+| `LLM_MAX_PROMPT_CHARS` | Caps the assembled prompt size before an optional provider request. |
 
 Inspect the ConfigMap:
 
@@ -41,7 +43,7 @@ Inspect the ConfigMap:
 kubectl describe configmap ai-infra-starter-kit-config -n ai-infra-starter-kit
 ```
 
-The default `LLM_PROVIDER` is `none` so the project works without an API key.
+The default `LLM_PROVIDER` is `none` so the project works without an API key. The default cost controls keep provider prompts bounded when a user enables LLM enrichment.
 
 ## What Belongs In A Secret
 

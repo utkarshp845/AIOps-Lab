@@ -109,6 +109,8 @@ When `LLM_PROVIDER=none`, the assistant uses deterministic rule-based analysis. 
 
 When a provider is enabled, prompt inputs are redacted immediately before the request. The provider API key is used in the HTTP authorization header and is not included in the prompt.
 
+The assistant also applies cost controls before provider requests: only a bounded number of recent logs are included, and the assembled prompt is capped by `LLM_MAX_PROMPT_CHARS`. This reduces both spend and unnecessary data exposure.
+
 Before enabling an external LLM provider:
 
 - review what logs may be sent.
