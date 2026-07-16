@@ -1,4 +1,4 @@
-# ai-infra-starter-kit
+# AIOps-Lab
 
 Simple first. Production-minded always.
 
