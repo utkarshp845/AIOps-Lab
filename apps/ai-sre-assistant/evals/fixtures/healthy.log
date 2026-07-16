@@ -1,0 +1,2 @@
+{"level":"INFO","event":"request_completed","message":"request completed","path":"/api/orders/ord-1001","status_code":200,"duration_ms":42}
+{"level":"INFO","event":"request_completed","message":"request completed","path":"/health","status_code":200,"duration_ms":8}

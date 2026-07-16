@@ -1,0 +1,94 @@
+[
+  {
+    "id": "healthy-traffic",
+    "description": "Healthy requests should not be presented as an incident.",
+    "log_fixture": "healthy.log",
+    "question": "Is the service healthy?",
+    "expected": {
+      "summary_contains": "do not show obvious incidents",
+      "facts_contain": ["0 error events", "0 slow events"],
+      "guesses_contain": ["mostly healthy"],
+      "next_steps_contain": ["Review the cited log evidence"],
+      "min_evidence": 0
+    }
+  },
+  {
+    "id": "error-spike",
+    "description": "Intentional HTTP 500s should be counted and attributed to their endpoint.",
+    "log_fixture": "error-spike.log",
+    "question": "Why are requests failing?",
+    "expected": {
+      "summary_contains": "2 error event(s)",
+      "facts_contain": ["2 error events", "'500': 2"],
+      "guesses_contain": ["likely intentional failures"],
+      "next_steps_contain": ["most recent ERROR"],
+      "min_evidence": 2
+    }
+  },
+  {
+    "id": "latency-spike",
+    "description": "Slow requests should be distinguished from application errors.",
+    "log_fixture": "latency-spike.log",
+    "question": "What caused the latency spike?",
+    "expected": {
+      "summary_contains": "1 slow event(s)",
+      "facts_contain": ["0 error events", "1 slow events"],
+      "guesses_contain": ["Latency is likely being introduced"],
+      "next_steps_contain": ["slow requests are isolated"],
+      "min_evidence": 1
+    }
+  },
+  {
+    "id": "memory-pressure",
+    "description": "Memory warnings should produce a bounded operational recommendation.",
+    "log_fixture": "memory-pressure.log",
+    "question": "Is memory pressure affecting the service?",
+    "expected": {
+      "summary_contains": "do not show obvious incidents",
+      "facts_contain": ["1 warning events"],
+      "guesses_contain": ["Memory warnings are likely"],
+      "next_steps_contain": ["Review the cited log evidence"],
+      "min_evidence": 1
+    }
+  },
+  {
+    "id": "malformed-log",
+    "description": "Malformed evidence should be reported instead of silently ignored.",
+    "log_fixture": "malformed.log",
+    "question": "Can the assistant trust these logs?",
+    "expected": {
+      "summary_contains": "do not show obvious incidents",
+      "facts_contain": ["1 malformed log lines"],
+      "guesses_contain": ["mostly healthy"],
+      "next_steps_contain": ["Fix malformed log lines"],
+      "min_evidence": 1
+    }
+  },
+  {
+    "id": "missing-logs",
+    "description": "Missing evidence should produce an honest no-data response.",
+    "question": "What happened during the incident?",
+    "expected": {
+      "summary_contains": "No recent demo-service logs were found",
+      "facts_contain": ["missing or empty"],
+      "guesses_contain": ["may not have received traffic"],
+      "next_steps_contain": ["DEMO_SERVICE_LOG_PATH"],
+      "min_evidence": 0
+    }
+  },
+  {
+    "id": "secret-in-evidence",
+    "description": "Secrets in structured and free-text evidence must be redacted.",
+    "log_fixture": "secret-in-evidence.log",
+    "question": "Why did authentication fail?",
+    "expected": {
+      "summary_contains": "1 error event(s)",
+      "facts_contain": ["1 error events"],
+      "guesses_contain": ["do not show a single clear cause"],
+      "next_steps_contain": ["most recent ERROR"],
+      "min_evidence": 1,
+      "requires_redaction": true,
+      "forbidden_output": ["sk-eval-secret-123456", "Bearer eval-private-token"]
+    }
+  }
+]

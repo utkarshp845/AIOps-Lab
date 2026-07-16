@@ -42,6 +42,8 @@
 - Ingress and TLS walkthrough.
 - External secrets workflow.
 - Horizontal Pod Autoscaling.
-- Incident evaluation set.
+- Hosted evaluation history and regression alerts.
+- Private incident datasets and release gates.
+- Model and provider quality/cost comparisons.
 - AI assistant guardrails.
 - Cloud deployment examples.

@@ -21,6 +21,7 @@ local app -> AI service -> logs/metrics -> AI SRE assistant -> observability -> 
 - Docker Compose wiring so both services share the same log file locally.
 - Tests, sample logs, docs, and a 30-day roadmap for building in public.
 - Incident walkthroughs that show how to reason from symptoms, metrics, logs, and safe next steps.
+- A runnable assistant evaluation corpus with grounded, useful, safe, private, and honest checks.
 
 ## Architecture
 
@@ -88,6 +89,7 @@ For secret handling and enforced assistant redaction rules, see `docs/15-secret-
 
 For practical cost optimization controls, see `docs/16-cost-optimization.md`.
 
+For the assistant evaluation corpus and quality rubric, see `docs/17-assistant-evaluation.md`.
 
 Ask the assistant directly:
 
@@ -129,6 +131,7 @@ ai-infra-starter-kit/
     14-kubernetes-production-next-steps.md
     15-secret-handling-and-redaction.md
     16-cost-optimization.md
+    17-assistant-evaluation.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts
@@ -171,6 +174,12 @@ This repo is designed to be built in public one small step at a time. Good updat
 - Where AI infra gets complicated and why.
 
 Start with `docs/build-log.md`.
+
+## Product Direction
+
+The open-source project makes the core learning path, safety controls, and evaluation approach transparent. That foundation should remain useful on its own.
+
+The future paid opportunity is the recurring team workflow around those foundations: hosted evaluation history, private incident datasets, release gates, model and provider comparisons, regression alerts, collaboration, and audit-ready exports. The product value is not simply generating an incident summary. It is helping teams prove that their operational assistant stays useful, safe, private, and cost-aware as their systems change.
 
 ## Lessons Learned
 

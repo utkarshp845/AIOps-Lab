@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 COPY cli ./cli
+COPY evals ./evals
 COPY tests ./tests
 
 EXPOSE 8001

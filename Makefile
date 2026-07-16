@@ -1,7 +1,7 @@
 COMPOSE ?= docker compose
 PYTHON ?= python
 
-.PHONY: up down logs test lint generate-traffic analyze-logs format
+.PHONY: up down logs test lint generate-traffic analyze-logs evaluate-assistant format
 
 up:
 	$(COMPOSE) up --build -d
@@ -26,6 +26,10 @@ generate-traffic:
 
 analyze-logs:
 	$(COMPOSE) run --rm --no-deps ai-sre-assistant python cli/sre.py analyze --max-lines 120
+
+evaluate-assistant:
+	$(COMPOSE) build ai-sre-assistant
+	$(COMPOSE) run --rm --no-deps ai-sre-assistant python -m evals.run_evals
 
 format:
 	$(COMPOSE) run --rm --no-deps demo-service ruff format app tests

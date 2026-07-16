@@ -503,3 +503,39 @@ What comes next:
 - Add assistant evaluation basics so usefulness, safety, and cost can be checked together.
 - Consider provider usage metadata when a provider returns token counts.
 - Keep dashboards, caching, quotas, and model routing as later steps after the simple controls are understood.
+
+## Week 4, Day 4 - Assistant Evaluation Basics
+
+Today I made AI SRE Assistant quality testable with a small deterministic evaluation suite.
+
+Day 1 hardened the security model. Day 2 enforced redaction. Day 3 bounded optional LLM cost. Day 4 checks whether the assistant remains useful, safe, and honest while those controls evolve.
+
+What changed:
+
+- Added seven incident evaluation cases for healthy traffic, error spikes, latency, memory pressure, malformed logs, missing logs, and secret-bearing evidence.
+- Added a reusable five-part rubric: grounded, useful, safe, private, and honest.
+- Added a command-line evaluation runner with a non-zero exit code on regression.
+- Added tests for every case plus negative tests that prove missing grounding and leaked secrets are detected.
+- Added a containerized `make evaluate-assistant` workflow.
+- Documented the limits of deterministic checks and the path toward real incident datasets, human review, and model comparisons.
+- Added a product direction that keeps the core evaluation method open while reserving hosted history, private datasets, release gates, alerts, comparisons, and audit exports as potential paid workflows.
+
+Why this matters:
+
+An AI assistant can sound plausible without being correct. Operational teams need repeatable evidence that a new prompt, model, provider, or code change did not weaken grounding, privacy, or safety.
+
+Evaluation also creates a credible path to monetization. The durable product is not a one-time incident summary. It is the system that helps teams measure quality over time, use their own private cases, block regressions, compare cost against outcomes, and produce governance evidence.
+
+Lessons learned:
+
+- AI assistants need evals before they need more autonomy.
+- A small known corpus is more useful than an impressive but unrepeatable demo.
+- Safety and privacy should be pass/fail gates, not averages that can be hidden by other scores.
+- The evaluator itself needs negative tests so teams know it catches real regressions.
+- Open evaluation builds trust; hosted team workflows create a clearer paid value proposition.
+
+What comes next:
+
+- Add production observability upgrade guidance.
+- Capture provider token usage, latency, and model identity for future quality/cost comparisons.
+- Grow the corpus with sanitized incidents before introducing more assistant autonomy.

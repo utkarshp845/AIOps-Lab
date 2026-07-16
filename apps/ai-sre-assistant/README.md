@@ -80,6 +80,24 @@ API responses that attempt LLM enrichment include `llm_cost_controls` so callers
 
 See `../../docs/16-cost-optimization.md` for the Day 3 cost optimization guide.
 
+## Evaluation
+
+The assistant includes a deterministic incident corpus and a five-part quality rubric. Run it locally from this directory:
+
+```bash
+python -m evals.run_evals
+```
+
+Or run the containerized workflow from the repository root:
+
+```bash
+make evaluate-assistant
+```
+
+The suite covers healthy traffic, error spikes, latency, memory pressure, malformed logs, missing logs, and secret-bearing evidence. Every case is checked for grounded, useful, safe, private, and honest output.
+
+See `../../docs/17-assistant-evaluation.md` for the rubric, limitations, and future product path.
+
 ## Redaction
 
 The assistant replaces obvious sensitive values with `[REDACTED]` before analysis and before data is sent to an optional LLM provider.
