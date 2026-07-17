@@ -539,3 +539,43 @@ What comes next:
 - Add production observability upgrade guidance.
 - Capture provider token usage, latency, and model identity for future quality/cost comparisons.
 - Grow the corpus with sanitized incidents before introducing more assistant autonomy.
+
+## Week 4, Day 5 - Production Observability Upgrade Path
+
+Today I mapped the local AIOps Lab signals to a production observability architecture.
+
+Day 4 made assistant quality testable. Day 5 asks how teams can operate, govern, and measure the service once logs and metrics no longer live on one laptop.
+
+What changed:
+
+- Added a production telemetry flow from services through a collector into metrics, logs, traces, dashboards, alerts, and controlled assistant evidence APIs.
+- Separated observability into service reliability, assistant quality and safety, and product-value signals.
+- Proposed bounded assistant metric names for requests, latency, fallbacks, truncation, redaction, eval checks, and provider tokens.
+- Added dashboard ownership for platform, AI product, security, FinOps, and product teams.
+- Added SLI templates for service health, assistant availability, latency, evaluation safety, and provider resilience.
+- Documented alert design around user impact, ownership, runbooks, and sustained symptoms.
+- Added privacy, security, retention, sampling, cardinality, and telemetry-cost controls.
+- Compared open-source, managed, and hybrid deployment paths without changing the default local stack.
+- Added a seven-stage migration plan and production-readiness checklist.
+- Connected privacy-aware product telemetry to eventual monetization without treating sensitive incident data as analytics exhaust.
+
+Why this matters:
+
+Production observability is more than installing dashboards. Teams need stable signals, clear ownership, useful alerts, controlled evidence access, and a way to connect assistant quality and provider cost to real user outcomes.
+
+This also strengthens the product direction. Paid value can grow around governed team workflows, but monetization needs evidence that users reach successful analyses, catch regressions, and adopt private evaluation and release controls. Those signals must be useful without compromising the incident data users trust the platform to protect.
+
+Lessons learned:
+
+- Start with operating questions and owners before choosing a backend.
+- Service health, assistant quality, and product value require different signals.
+- Safety and privacy checks should remain release gates rather than averages.
+- Request IDs belong in logs and traces, not high-cardinality metric labels.
+- OpenTelemetry can preserve backend choice, but it does not replace retention, access, or cost decisions.
+- Product telemetry should measure user outcomes without collecting unnecessary incident content.
+
+What comes next:
+
+- Keep the default setup small and add production components as optional paths.
+- Add provider token, latency, and model metadata for quality/cost comparisons.
+- Consider a focused OpenTelemetry Collector example after the signal contracts are stable.

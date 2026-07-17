@@ -39,6 +39,7 @@
 - OpenTelemetry collector.
 - Log backend integration.
 - Prometheus and Grafana or managed observability.
+- Privacy-aware product usage and outcome telemetry.
 - Ingress and TLS walkthrough.
 - External secrets workflow.
 - Horizontal Pod Autoscaling.

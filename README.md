@@ -91,6 +91,8 @@ For practical cost optimization controls, see `docs/16-cost-optimization.md`.
 
 For the assistant evaluation corpus and quality rubric, see `docs/17-assistant-evaluation.md`.
 
+For the production observability architecture and staged migration path, see `docs/18-production-observability.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -132,6 +134,7 @@ ai-infra-starter-kit/
     15-secret-handling-and-redaction.md
     16-cost-optimization.md
     17-assistant-evaluation.md
+    18-production-observability.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts

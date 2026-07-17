@@ -119,3 +119,7 @@ Symptom -> Metrics evidence -> Log evidence -> Likely cause -> Safe next steps
 ```
 
 That pattern is also the intended behavior for the AI SRE Assistant.
+
+## Production Upgrade Path
+
+The local shared-log and direct-metrics workflow is a teaching bridge. For centralized collection, backends, dashboards, SLOs, alerts, assistant telemetry, and privacy-aware product signals, continue with [Production Observability Upgrade Path](18-production-observability.md).

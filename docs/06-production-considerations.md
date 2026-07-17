@@ -33,6 +33,8 @@ Production should add:
 - alert thresholds tied to symptoms users care about.
 - incident examples that connect metrics to logs and assistant output.
 
+See [Production Observability Upgrade Path](18-production-observability.md) for a staged architecture, signal ownership, SLO and alert guidance, assistant quality metrics, and product-value measurement.
+
 ## Health And Readiness
 
 Health checks should answer whether the process is alive.
