@@ -166,6 +166,8 @@ Recommended sequence:
 
 The key is to keep the project anchored in the working lab. Each advanced tool should answer a specific problem the lab has already revealed.
 
+Continue with [Advanced Model Serving Roadmap](19-advanced-model-serving-roadmap.md) for the Week 4 Day 6 decision framework.
+
 Start with `07-security.md` before adding heavier production tooling. Security habits should appear before a service is exposed, scaled, or connected to real operational data.
 
 ## Week 3 Takeaway

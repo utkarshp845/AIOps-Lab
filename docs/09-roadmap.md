@@ -46,5 +46,8 @@
 - Hosted evaluation history and regression alerts.
 - Private incident datasets and release gates.
 - Model and provider quality/cost comparisons.
+- Provider versus self-hosted inference benchmark harness.
+- Optional single-GPU vLLM deployment example.
+- Enterprise VPC and on-premises deployment path.
 - AI assistant guardrails.
 - Cloud deployment examples.

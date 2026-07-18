@@ -93,6 +93,8 @@ For the assistant evaluation corpus and quality rubric, see `docs/17-assistant-e
 
 For the production observability architecture and staged migration path, see `docs/18-production-observability.md`.
 
+For the advanced model serving decision framework and commercialization path, see `docs/19-advanced-model-serving-roadmap.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -135,6 +137,7 @@ ai-infra-starter-kit/
     16-cost-optimization.md
     17-assistant-evaluation.md
     18-production-observability.md
+    19-advanced-model-serving-roadmap.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts

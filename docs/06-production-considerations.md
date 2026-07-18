@@ -96,3 +96,5 @@ Tools such as vLLM, Triton, Ray, KServe, and GPU scheduling are valuable when th
 They are roadmap items, not Day 1 requirements.
 
 Before adding them, the repo should already explain the operational foundation: logs, metrics, health checks, Kubernetes basics, security, cost, and evaluation.
+
+See [Advanced Model Serving Roadmap](19-advanced-model-serving-roadmap.md) for adoption gates, framework boundaries, benchmark criteria, GPU operating requirements, and potential product tiers.
