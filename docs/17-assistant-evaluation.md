@@ -18,7 +18,7 @@ Or run it directly from `apps/ai-sre-assistant`:
 python -m evals.run_evals
 ```
 
-The command exits with a non-zero status when any case fails, so it can become a simple CI release gate later.
+The command exits with a non-zero status when any case fails. CI and `make validate` run it as a release gate.
 
 ## Evaluation Corpus
 
@@ -73,7 +73,7 @@ That product direction reinforces the user outcome: teams should be able to adop
 
 ## Next Steps
 
-- Keep these deterministic cases in the normal test suite.
+- Keep these deterministic cases in the normal test suite and CI release gate.
 - Add sanitized real-world incidents as the assistant supports more failure modes.
 - Record provider usage metadata before comparing quality against cost.
 - Version the corpus and thresholds when evaluation results become a release gate.

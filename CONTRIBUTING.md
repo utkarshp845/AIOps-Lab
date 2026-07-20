@@ -36,8 +36,10 @@ Run formatting and lint checks before opening a pull request:
 
 ```bash
 make format
-make lint
+make validate
 ```
+
+`make validate` builds both images, runs both test suites, runs lint checks, and executes the assistant evaluation corpus. The same evaluation gate runs in CI.
 
 ## Pull Request Notes
 

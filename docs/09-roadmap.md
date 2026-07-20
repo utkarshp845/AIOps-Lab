@@ -33,6 +33,7 @@
 - Assistant evaluation basics.
 - Production observability upgrade path.
 - Optional advanced serving roadmap: vLLM, Triton, Ray, KServe, and GPU scheduling.
+- Production-readiness review with local and CI release gates.
 
 ## Later
 

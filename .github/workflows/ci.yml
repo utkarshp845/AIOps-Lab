@@ -40,3 +40,7 @@ jobs:
       - name: Test ai-sre-assistant
         working-directory: apps/ai-sre-assistant
         run: pytest -q
+
+      - name: Evaluate ai-sre-assistant
+        working-directory: apps/ai-sre-assistant
+        run: python -m evals.run_evals

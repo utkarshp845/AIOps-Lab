@@ -95,6 +95,8 @@ For the production observability architecture and staged migration path, see `do
 
 For the advanced model serving decision framework and commercialization path, see `docs/19-advanced-model-serving-roadmap.md`.
 
+For the Week 4 release gates, readiness verdict, and next-stage priorities, see `docs/20-production-readiness-review.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -138,6 +140,7 @@ ai-infra-starter-kit/
     17-assistant-evaluation.md
     18-production-observability.md
     19-advanced-model-serving-roadmap.md
+    20-production-readiness-review.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts
@@ -167,7 +170,7 @@ You should see the assistant report intentionally generated 500s, latency spikes
 - Week 1: local demo-service, AI SRE Assistant, Docker Compose, sample logs, basic README.
 - Week 2: observability basics, metrics, dashboards, structured logging, incident examples.
 - Week 3: Kubernetes manifests, operations, config/secrets, probes/resources, incident debugging, production next steps.
-- Week 4: security hardening, cost optimization, evaluation basics, production observability, optional advanced serving path with vLLM, Triton, Ray, KServe, and GPU scheduling.
+- Week 4: security hardening, cost optimization, evaluation, production observability, advanced serving decisions, and a release-gated production-readiness review.
 
 ## Build In Public
 
