@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ai-sre-assistant
-  namespace: ai-infra-starter-kit
+  namespace: aiops-lab
   labels:
     app.kubernetes.io/name: ai-sre-assistant
-    app.kubernetes.io/part-of: ai-infra-starter-kit
+    app.kubernetes.io/part-of: aiops-lab
     app.kubernetes.io/component: sre-assistant
 spec:
   replicas: 1
@@ -16,12 +16,12 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: ai-sre-assistant
-        app.kubernetes.io/part-of: ai-infra-starter-kit
+        app.kubernetes.io/part-of: aiops-lab
         app.kubernetes.io/component: sre-assistant
     spec:
       containers:
         - name: ai-sre-assistant
-          image: ai-infra-starter-kit/ai-sre-assistant:local
+          image: aiops-lab/ai-sre-assistant:local
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -30,37 +30,37 @@ spec:
             - name: LLM_PROVIDER
               valueFrom:
                 configMapKeyRef:
-                  name: ai-infra-starter-kit-config
+                  name: aiops-lab-config
                   key: LLM_PROVIDER
             - name: OPENAI_BASE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: ai-infra-starter-kit-config
+                  name: aiops-lab-config
                   key: OPENAI_BASE_URL
             - name: MODEL_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: ai-infra-starter-kit-config
+                  name: aiops-lab-config
                   key: MODEL_NAME
             - name: LLM_MAX_LOG_ENTRIES
               valueFrom:
                 configMapKeyRef:
-                  name: ai-infra-starter-kit-config
+                  name: aiops-lab-config
                   key: LLM_MAX_LOG_ENTRIES
             - name: LLM_MAX_PROMPT_CHARS
               valueFrom:
                 configMapKeyRef:
-                  name: ai-infra-starter-kit-config
+                  name: aiops-lab-config
                   key: LLM_MAX_PROMPT_CHARS
             - name: DEMO_SERVICE_LOG_PATH
               valueFrom:
                 configMapKeyRef:
-                  name: ai-infra-starter-kit-config
+                  name: aiops-lab-config
                   key: DEMO_SERVICE_LOG_PATH
             - name: DEMO_SERVICE_METRICS_URL
               valueFrom:
                 configMapKeyRef:
-                  name: ai-infra-starter-kit-config
+                  name: aiops-lab-config
                   key: DEMO_SERVICE_METRICS_URL
             - name: OPENAI_API_KEY
               valueFrom:
@@ -106,10 +106,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ai-sre-assistant
-  namespace: ai-infra-starter-kit
+  namespace: aiops-lab
   labels:
     app.kubernetes.io/name: ai-sre-assistant
-    app.kubernetes.io/part-of: ai-infra-starter-kit
+    app.kubernetes.io/part-of: aiops-lab
     app.kubernetes.io/component: sre-assistant
 spec:
   type: ClusterIP

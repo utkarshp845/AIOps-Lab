@@ -1,10 +1,10 @@
-name: ai-infra-starter-kit
+name: aiops-lab
 
 services:
   demo-service:
     build:
       context: ./apps/demo-service
-    container_name: ai-infra-demo-service
+    container_name: aiops-demo-service
     ports:
       - "8000:8000"
     environment:
@@ -20,7 +20,7 @@ services:
   ai-sre-assistant:
     build:
       context: ./apps/ai-sre-assistant
-    container_name: ai-infra-ai-sre-assistant
+    container_name: aiops-ai-sre-assistant
     ports:
       - "8001:8001"
     environment:
@@ -46,11 +46,11 @@ services:
   # Optional local model provider for later experiments.
   # 1. Uncomment this service.
   # 2. Set LLM_PROVIDER=ollama and OPENAI_BASE_URL=http://ollama:11434/v1 in .env.
-  # 3. Pull a model with: docker exec -it ai-infra-ollama ollama pull llama3.1
+  # 3. Pull a model with: docker exec -it aiops-ollama ollama pull llama3.1
   #
   # ollama:
   #   image: ollama/ollama:latest
-  #   container_name: ai-infra-ollama
+  #   container_name: aiops-ollama
   #   ports:
   #     - "11434:11434"
   #   volumes:

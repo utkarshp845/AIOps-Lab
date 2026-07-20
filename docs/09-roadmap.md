@@ -35,6 +35,10 @@
 - Optional advanced serving roadmap: vLLM, Triton, Ray, KServe, and GPU scheduling.
 - Production-readiness review with local and CI release gates.
 
+## Commercialization
+
+The phased plan for turning the lab into a monetized product — audience, wedge product, paid team tier — is in `21-commercialization-roadmap.md`.
+
 ## Later
 
 - OpenTelemetry collector.

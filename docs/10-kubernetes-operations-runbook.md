@@ -17,23 +17,23 @@ This runbook assumes you already created the kind cluster, loaded local images, 
 All Kubernetes resources for this project run in one namespace:
 
 ```bash
-kubectl get all -n ai-infra-starter-kit
+kubectl get all -n aiops-lab
 ```
 
 For a shorter local session, you can set the namespace on your current context:
 
 ```bash
-kubectl config set-context --current --namespace=ai-infra-starter-kit
+kubectl config set-context --current --namespace=aiops-lab
 ```
 
-The rest of this guide keeps `-n ai-infra-starter-kit` in commands so each example is explicit and copy-paste friendly.
+The rest of this guide keeps `-n aiops-lab` in commands so each example is explicit and copy-paste friendly.
 
 ## Quick Status Check
 
 Start with the cluster objects that explain most local issues:
 
 ```bash
-kubectl get deployments,pods,svc,pvc -n ai-infra-starter-kit
+kubectl get deployments,pods,svc,pvc -n aiops-lab
 ```
 
 What you want to see:
@@ -47,8 +47,8 @@ What you want to see:
 Then confirm rollout status:
 
 ```bash
-kubectl rollout status deployment/demo-service -n ai-infra-starter-kit
-kubectl rollout status deployment/ai-sre-assistant -n ai-infra-starter-kit
+kubectl rollout status deployment/demo-service -n aiops-lab
+kubectl rollout status deployment/ai-sre-assistant -n aiops-lab
 ```
 
 ## Health, Readiness, And Metrics
@@ -56,11 +56,11 @@ kubectl rollout status deployment/ai-sre-assistant -n ai-infra-starter-kit
 Port-forward both services in separate terminals:
 
 ```bash
-kubectl port-forward svc/demo-service 8000:8000 -n ai-infra-starter-kit
+kubectl port-forward svc/demo-service 8000:8000 -n aiops-lab
 ```
 
 ```bash
-kubectl port-forward svc/ai-sre-assistant 8001:8001 -n ai-infra-starter-kit
+kubectl port-forward svc/ai-sre-assistant 8001:8001 -n aiops-lab
 ```
 
 Check the app-level signals:
@@ -117,14 +117,14 @@ For an end-to-end incident walkthrough that uses these signals together, see `13
 View recent logs from each Deployment:
 
 ```bash
-kubectl logs deployment/demo-service -n ai-infra-starter-kit --tail=50
-kubectl logs deployment/ai-sre-assistant -n ai-infra-starter-kit --tail=50
+kubectl logs deployment/demo-service -n aiops-lab --tail=50
+kubectl logs deployment/ai-sre-assistant -n aiops-lab --tail=50
 ```
 
 Follow logs while generating traffic:
 
 ```bash
-kubectl logs deployment/demo-service -n ai-infra-starter-kit --follow
+kubectl logs deployment/demo-service -n aiops-lab --follow
 ```
 
 For this learning lab, the assistant also reads the shared file at:
@@ -142,14 +142,14 @@ Services give pods stable names inside the cluster.
 Check service objects:
 
 ```bash
-kubectl get svc -n ai-infra-starter-kit
+kubectl get svc -n aiops-lab
 ```
 
 Check service endpoints:
 
 ```bash
-kubectl get endpoints demo-service -n ai-infra-starter-kit
-kubectl get endpoints ai-sre-assistant -n ai-infra-starter-kit
+kubectl get endpoints demo-service -n aiops-lab
+kubectl get endpoints ai-sre-assistant -n aiops-lab
 ```
 
 If a Service has no endpoints, Kubernetes has not found any ready pods behind it. Check pod labels, readiness probes, and pod status.
@@ -159,13 +159,13 @@ If a Service has no endpoints, Kubernetes has not found any ready pods behind it
 Normal configuration lives in the ConfigMap. For the full config and secrets walkthrough, see `11-kubernetes-config-and-secrets.md`:
 
 ```bash
-kubectl describe configmap ai-infra-starter-kit-config -n ai-infra-starter-kit
+kubectl describe configmap aiops-lab-config -n aiops-lab
 ```
 
 Sensitive configuration belongs in a Secret:
 
 ```bash
-kubectl get secret ai-sre-assistant-secrets -n ai-infra-starter-kit
+kubectl get secret ai-sre-assistant-secrets -n aiops-lab
 ```
 
 Do not paste real API keys into screenshots, tweets, issues, or pull requests.
@@ -177,13 +177,13 @@ The local kind setup uses a shared PersistentVolumeClaim so the assistant can re
 Check the claim:
 
 ```bash
-kubectl get pvc -n ai-infra-starter-kit
+kubectl get pvc -n aiops-lab
 ```
 
 Describe it if it is not `Bound`:
 
 ```bash
-kubectl describe pvc shared-logs -n ai-infra-starter-kit
+kubectl describe pvc shared-logs -n aiops-lab
 ```
 
 This is a learning bridge from Docker Compose to Kubernetes. It is not the recommended production logging architecture.
@@ -197,18 +197,18 @@ Likely cause: kind cannot see the local Docker image.
 Check:
 
 ```bash
-kubectl describe pod -l app.kubernetes.io/name=demo-service -n ai-infra-starter-kit
+kubectl describe pod -l app.kubernetes.io/name=demo-service -n aiops-lab
 ```
 
 Fix:
 
 ```bash
-docker build -t ai-infra-starter-kit/demo-service:local apps/demo-service
-docker build -t ai-infra-starter-kit/ai-sre-assistant:local apps/ai-sre-assistant
-kind load docker-image ai-infra-starter-kit/demo-service:local --name ai-infra-starter-kit
-kind load docker-image ai-infra-starter-kit/ai-sre-assistant:local --name ai-infra-starter-kit
-kubectl rollout restart deployment/demo-service -n ai-infra-starter-kit
-kubectl rollout restart deployment/ai-sre-assistant -n ai-infra-starter-kit
+docker build -t aiops-lab/demo-service:local apps/demo-service
+docker build -t aiops-lab/ai-sre-assistant:local apps/ai-sre-assistant
+kind load docker-image aiops-lab/demo-service:local --name aiops-lab
+kind load docker-image aiops-lab/ai-sre-assistant:local --name aiops-lab
+kubectl rollout restart deployment/demo-service -n aiops-lab
+kubectl rollout restart deployment/ai-sre-assistant -n aiops-lab
 ```
 
 ### Pods Are Running But Not Ready
@@ -218,8 +218,8 @@ Likely cause: readiness probes are failing or the app is not listening on the ex
 Check:
 
 ```bash
-kubectl describe pod -l app.kubernetes.io/name=demo-service -n ai-infra-starter-kit
-kubectl logs deployment/demo-service -n ai-infra-starter-kit --tail=100
+kubectl describe pod -l app.kubernetes.io/name=demo-service -n aiops-lab
+kubectl logs deployment/demo-service -n aiops-lab --tail=100
 ```
 
 Look for failed readiness probe events, startup errors, or port mismatches.
@@ -236,10 +236,10 @@ Likely causes:
 Check:
 
 ```bash
-kubectl get pvc -n ai-infra-starter-kit
-kubectl describe configmap ai-infra-starter-kit-config -n ai-infra-starter-kit
-kubectl logs deployment/demo-service -n ai-infra-starter-kit --tail=50
-kubectl logs deployment/ai-sre-assistant -n ai-infra-starter-kit --tail=50
+kubectl get pvc -n aiops-lab
+kubectl describe configmap aiops-lab-config -n aiops-lab
+kubectl logs deployment/demo-service -n aiops-lab --tail=50
+kubectl logs deployment/ai-sre-assistant -n aiops-lab --tail=50
 ```
 
 Then generate traffic again:
@@ -259,8 +259,8 @@ Likely causes:
 Check:
 
 ```bash
-kubectl get endpoints demo-service -n ai-infra-starter-kit
-kubectl describe configmap ai-infra-starter-kit-config -n ai-infra-starter-kit
+kubectl get endpoints demo-service -n aiops-lab
+kubectl describe configmap aiops-lab-config -n aiops-lab
 curl http://localhost:8000/metrics
 ```
 
@@ -278,7 +278,7 @@ Check:
 
 ```bash
 kubectl get pv
-kubectl describe pvc shared-logs -n ai-infra-starter-kit
+kubectl describe pvc shared-logs -n aiops-lab
 ```
 
 For this repo, `infra/k8s/storage.yaml` includes a kind-friendly local PersistentVolume. Reapply it if needed:
@@ -298,14 +298,14 @@ Likely causes:
 Check:
 
 ```bash
-kubectl get svc -n ai-infra-starter-kit
+kubectl get svc -n aiops-lab
 ```
 
 Use different local ports if needed:
 
 ```bash
-kubectl port-forward svc/demo-service 18000:8000 -n ai-infra-starter-kit
-kubectl port-forward svc/ai-sre-assistant 18001:8001 -n ai-infra-starter-kit
+kubectl port-forward svc/demo-service 18000:8000 -n aiops-lab
+kubectl port-forward svc/ai-sre-assistant 18001:8001 -n aiops-lab
 ```
 
 Then call:
@@ -319,7 +319,7 @@ curl http://localhost:18001/health
 
 Use this order when something is wrong:
 
-1. `kubectl get deployments,pods,svc,pvc -n ai-infra-starter-kit`
+1. `kubectl get deployments,pods,svc,pvc -n aiops-lab`
 2. `kubectl describe pod ...`
 3. `kubectl logs deployment/...`
 4. app health endpoints through port-forward
@@ -333,8 +333,8 @@ Start with read-only inspection. Restart or delete resources only after the evid
 
 Useful screenshots for a build-in-public update:
 
-- `kubectl get deployments,pods,svc,pvc -n ai-infra-starter-kit`
-- `kubectl rollout status deployment/demo-service -n ai-infra-starter-kit`
+- `kubectl get deployments,pods,svc,pvc -n aiops-lab`
+- `kubectl rollout status deployment/demo-service -n aiops-lab`
 - `curl http://localhost:8000/health` and `curl http://localhost:8000/metrics`
 - `POST /analyze/metrics` response from the assistant
 - `kubectl logs deployment/demo-service --tail=20`
