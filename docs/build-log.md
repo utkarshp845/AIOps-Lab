@@ -2,7 +2,7 @@
 
 ## Day 1 - Simple First, Production-Minded Always
 
-I am building `ai-infra-starter-kit` because AI infrastructure is becoming part of normal software infrastructure, but the learning path often starts too late in the stack.
+I am building AIOps Lab because AI infrastructure is becoming part of normal software infrastructure, but the learning path often starts too late in the stack.
 
 AI infra is intimidating because beginners are quickly surrounded by model serving frameworks, GPU scheduling, Kubernetes operators, distributed systems, observability, evals, and cost tradeoffs. Those topics matter, but they do not need to arrive all at once.
 

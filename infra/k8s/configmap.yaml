@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ai-infra-starter-kit-config
-  namespace: ai-infra-starter-kit
+  name: aiops-lab-config
+  namespace: aiops-lab
   labels:
-    app.kubernetes.io/name: ai-infra-starter-kit-config
-    app.kubernetes.io/part-of: ai-infra-starter-kit
+    app.kubernetes.io/name: aiops-lab-config
+    app.kubernetes.io/part-of: aiops-lab
 data:
   # Safe-to-commit application configuration. Do not put API keys here.
   DEMO_SERVICE_LOG_PATH: /shared/logs/demo-service.log

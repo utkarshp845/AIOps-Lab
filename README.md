@@ -2,7 +2,7 @@
 
 Simple first. Production-minded always.
 
-`ai-infra-starter-kit` is a practical learning lab for AI infrastructure. It starts with a normal web service, adds logs and metrics, then uses an AI SRE Assistant to explain what is happening operationally.
+AIOps Lab is a practical learning lab for AI infrastructure. It starts with a normal web service, adds logs and metrics, then uses an AI SRE Assistant to explain what is happening operationally.
 
 The first version runs on a normal laptop. No GPU, Kubernetes, vLLM, Triton, Ray, KServe, or full MLOps platform is required on Day 1.
 
@@ -41,8 +41,8 @@ The AI assistant does not need an LLM key to work. If no provider is configured,
 ## Quickstart
 
 ```bash
-git clone https://github.com/your-username/ai-infra-starter-kit.git
-cd ai-infra-starter-kit
+git clone https://github.com/utkarshp845/AIOps-Lab.git
+cd AIOps-Lab
 cp .env.example .env
 make up
 make test
@@ -97,6 +97,8 @@ For the advanced model serving decision framework and commercialization path, se
 
 For the Week 4 release gates, readiness verdict, and next-stage priorities, see `docs/20-production-readiness-review.md`.
 
+For the phased commercialization roadmap with milestones and success metrics, see `docs/21-commercialization-roadmap.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -124,7 +126,7 @@ curl -s -X POST http://localhost:8001/summarize-incident \
 ## Repository Structure
 
 ```text
-ai-infra-starter-kit/
+AIOps-Lab/
   apps/
     demo-service/        # FastAPI app that emits health, failure, latency, logs, and metrics
     ai-sre-assistant/    # FastAPI app and CLI that analyze demo-service logs
@@ -141,6 +143,7 @@ ai-infra-starter-kit/
     18-production-observability.md
     19-advanced-model-serving-roadmap.md
     20-production-readiness-review.md
+    21-commercialization-roadmap.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts
@@ -189,6 +192,8 @@ Start with `docs/build-log.md`.
 The open-source project makes the core learning path, safety controls, and evaluation approach transparent. That foundation should remain useful on its own.
 
 The future paid opportunity is the recurring team workflow around those foundations: hosted evaluation history, private incident datasets, release gates, model and provider comparisons, regression alerts, collaboration, and audit-ready exports. The product value is not simply generating an incident summary. It is helping teams prove that their operational assistant stays useful, safe, private, and cost-aware as their systems change.
+
+The sequenced plan — audience first, wedge product with design partners second, paid team tier third — lives in `docs/21-commercialization-roadmap.md` with per-phase milestones, success metrics, and exit criteria.
 
 ## Lessons Learned
 

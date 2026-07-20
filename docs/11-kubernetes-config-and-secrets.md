@@ -40,7 +40,7 @@ Current values:
 Inspect the ConfigMap:
 
 ```bash
-kubectl describe configmap ai-infra-starter-kit-config -n ai-infra-starter-kit
+kubectl describe configmap aiops-lab-config -n aiops-lab
 ```
 
 The default `LLM_PROVIDER` is `none` so the project works without an API key. The default cost controls keep provider prompts bounded when a user enables LLM enrichment.
@@ -60,7 +60,7 @@ The assistant deployment marks this secret key as optional. That means Kubernete
 Inspect whether the Secret exists:
 
 ```bash
-kubectl get secret ai-sre-assistant-secrets -n ai-infra-starter-kit
+kubectl get secret ai-sre-assistant-secrets -n aiops-lab
 ```
 
 Do not print, screenshot, tweet, or commit real secret values.
@@ -116,7 +116,7 @@ Create a private local Secret manifest:
 ```bash
 kubectl create secret generic ai-sre-assistant-secrets \
   --from-literal=OPENAI_API_KEY="$OPENAI_API_KEY" \
-  -n ai-infra-starter-kit \
+  -n aiops-lab \
   --dry-run=client \
   -o yaml > infra/k8s/secret.local.yaml
 ```
@@ -126,7 +126,7 @@ PowerShell:
 ```powershell
 kubectl create secret generic ai-sre-assistant-secrets `
   --from-literal=OPENAI_API_KEY="$env:OPENAI_API_KEY" `
-  -n ai-infra-starter-kit `
+  -n aiops-lab `
   --dry-run=client `
   -o yaml > infra/k8s/secret.local.yaml
 ```
@@ -140,8 +140,8 @@ kubectl apply -f infra/k8s/secret.local.yaml
 Enable the provider in the ConfigMap:
 
 ```bash
-kubectl patch configmap ai-infra-starter-kit-config \
-  -n ai-infra-starter-kit \
+kubectl patch configmap aiops-lab-config \
+  -n aiops-lab \
   --type merge \
   -p '{"data":{"LLM_PROVIDER":"openai"}}'
 ```
@@ -149,8 +149,8 @@ kubectl patch configmap ai-infra-starter-kit-config \
 Restart the assistant so it reads the updated environment variables:
 
 ```bash
-kubectl rollout restart deployment/ai-sre-assistant -n ai-infra-starter-kit
-kubectl rollout status deployment/ai-sre-assistant -n ai-infra-starter-kit
+kubectl rollout restart deployment/ai-sre-assistant -n aiops-lab
+kubectl rollout status deployment/ai-sre-assistant -n aiops-lab
 ```
 
 Why restart? Environment variables from ConfigMaps and Secrets are read when the container starts. Updating the ConfigMap or Secret does not automatically update an already-running process.
@@ -174,7 +174,7 @@ env:
   - name: LLM_PROVIDER
     valueFrom:
       configMapKeyRef:
-        name: ai-infra-starter-kit-config
+        name: aiops-lab-config
         key: LLM_PROVIDER
   - name: OPENAI_API_KEY
     valueFrom:
@@ -193,7 +193,7 @@ This makes the app image reusable. The image does not need to be rebuilt when co
 Check the provider value:
 
 ```bash
-kubectl describe configmap ai-infra-starter-kit-config -n ai-infra-starter-kit
+kubectl describe configmap aiops-lab-config -n aiops-lab
 ```
 
 If `LLM_PROVIDER=none`, the assistant is behaving as configured.
@@ -201,13 +201,13 @@ If `LLM_PROVIDER=none`, the assistant is behaving as configured.
 Check whether the Secret exists:
 
 ```bash
-kubectl get secret ai-sre-assistant-secrets -n ai-infra-starter-kit
+kubectl get secret ai-sre-assistant-secrets -n aiops-lab
 ```
 
 Restart the Deployment after changing ConfigMaps or Secrets:
 
 ```bash
-kubectl rollout restart deployment/ai-sre-assistant -n ai-infra-starter-kit
+kubectl rollout restart deployment/ai-sre-assistant -n aiops-lab
 ```
 
 ### The Secret Exists But The LLM Request Fails
@@ -215,7 +215,7 @@ kubectl rollout restart deployment/ai-sre-assistant -n ai-infra-starter-kit
 Check assistant logs without printing the key:
 
 ```bash
-kubectl logs deployment/ai-sre-assistant -n ai-infra-starter-kit --tail=100
+kubectl logs deployment/ai-sre-assistant -n aiops-lab --tail=100
 ```
 
 Likely causes:
@@ -231,9 +231,9 @@ Likely causes:
 Delete and recreate the Secret:
 
 ```bash
-kubectl delete secret ai-sre-assistant-secrets -n ai-infra-starter-kit
+kubectl delete secret ai-sre-assistant-secrets -n aiops-lab
 kubectl apply -f infra/k8s/secret.local.yaml
-kubectl rollout restart deployment/ai-sre-assistant -n ai-infra-starter-kit
+kubectl rollout restart deployment/ai-sre-assistant -n aiops-lab
 ```
 
 Do not commit `infra/k8s/secret.local.yaml`.

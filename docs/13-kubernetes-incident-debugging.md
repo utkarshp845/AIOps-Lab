@@ -37,11 +37,11 @@ You should have:
 Port-forward commands:
 
 ```bash
-kubectl port-forward svc/demo-service 8000:8000 -n ai-infra-starter-kit
+kubectl port-forward svc/demo-service 8000:8000 -n aiops-lab
 ```
 
 ```bash
-kubectl port-forward svc/ai-sre-assistant 8001:8001 -n ai-infra-starter-kit
+kubectl port-forward svc/ai-sre-assistant 8001:8001 -n aiops-lab
 ```
 
 ## Step 1: Create Symptoms
@@ -83,13 +83,13 @@ This creates enough evidence for Kubernetes inspection, metrics analysis, and as
 Start broad:
 
 ```bash
-kubectl get deployments,pods,svc,endpoints,pvc -n ai-infra-starter-kit
+kubectl get deployments,pods,svc,endpoints,pvc -n aiops-lab
 ```
 
 Then check recent events:
 
 ```bash
-kubectl get events -n ai-infra-starter-kit --sort-by=.lastTimestamp
+kubectl get events -n aiops-lab --sort-by=.lastTimestamp
 ```
 
 What this tells you:
@@ -125,13 +125,13 @@ If `/health` and `/ready` are passing while errors still happen, that usually me
 Read recent `demo-service` container logs:
 
 ```bash
-kubectl logs deployment/demo-service -n ai-infra-starter-kit --tail=100
+kubectl logs deployment/demo-service -n aiops-lab --tail=100
 ```
 
 Read assistant logs:
 
 ```bash
-kubectl logs deployment/ai-sre-assistant -n ai-infra-starter-kit --tail=100
+kubectl logs deployment/ai-sre-assistant -n aiops-lab --tail=100
 ```
 
 Look for evidence such as:
@@ -230,9 +230,9 @@ The right next step depends on which layer has evidence.
 Prefer read-only commands first:
 
 ```bash
-kubectl get deployments,pods,svc,endpoints,pvc -n ai-infra-starter-kit
-kubectl get events -n ai-infra-starter-kit --sort-by=.lastTimestamp
-kubectl logs deployment/demo-service -n ai-infra-starter-kit --tail=100
+kubectl get deployments,pods,svc,endpoints,pvc -n aiops-lab
+kubectl get events -n aiops-lab --sort-by=.lastTimestamp
+kubectl logs deployment/demo-service -n aiops-lab --tail=100
 curl http://localhost:8000/metrics
 curl -s -X POST http://localhost:8001/summarize-incident -H "Content-Type: application/json" -d '{"max_lines":200,"use_llm":false}'
 ```

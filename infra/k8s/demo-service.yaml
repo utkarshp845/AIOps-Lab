@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo-service
-  namespace: ai-infra-starter-kit
+  namespace: aiops-lab
   labels:
     app.kubernetes.io/name: demo-service
-    app.kubernetes.io/part-of: ai-infra-starter-kit
+    app.kubernetes.io/part-of: aiops-lab
     app.kubernetes.io/component: demo-api
 spec:
   replicas: 1
@@ -16,12 +16,12 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: demo-service
-        app.kubernetes.io/part-of: ai-infra-starter-kit
+        app.kubernetes.io/part-of: aiops-lab
         app.kubernetes.io/component: demo-api
     spec:
       containers:
         - name: demo-service
-          image: ai-infra-starter-kit/demo-service:local
+          image: aiops-lab/demo-service:local
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -30,7 +30,7 @@ spec:
             - name: DEMO_SERVICE_LOG_PATH
               valueFrom:
                 configMapKeyRef:
-                  name: ai-infra-starter-kit-config
+                  name: aiops-lab-config
                   key: DEMO_SERVICE_LOG_PATH
           volumeMounts:
             - name: demo-logs
@@ -70,10 +70,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: demo-service
-  namespace: ai-infra-starter-kit
+  namespace: aiops-lab
   labels:
     app.kubernetes.io/name: demo-service
-    app.kubernetes.io/part-of: ai-infra-starter-kit
+    app.kubernetes.io/part-of: aiops-lab
     app.kubernetes.io/component: demo-api
 spec:
   type: ClusterIP

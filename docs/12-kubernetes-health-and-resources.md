@@ -125,33 +125,33 @@ Useful conversions:
 Describe the Deployment:
 
 ```bash
-kubectl describe deployment demo-service -n ai-infra-starter-kit
-kubectl describe deployment ai-sre-assistant -n ai-infra-starter-kit
+kubectl describe deployment demo-service -n aiops-lab
+kubectl describe deployment ai-sre-assistant -n aiops-lab
 ```
 
 Describe a pod:
 
 ```bash
-kubectl describe pod -l app.kubernetes.io/name=demo-service -n ai-infra-starter-kit
+kubectl describe pod -l app.kubernetes.io/name=demo-service -n aiops-lab
 ```
 
 Check events:
 
 ```bash
-kubectl get events -n ai-infra-starter-kit --sort-by=.lastTimestamp
+kubectl get events -n aiops-lab --sort-by=.lastTimestamp
 ```
 
 Check pod status:
 
 ```bash
-kubectl get pods -n ai-infra-starter-kit
+kubectl get pods -n aiops-lab
 ```
 
 Check Service endpoints:
 
 ```bash
-kubectl get endpoints demo-service -n ai-infra-starter-kit
-kubectl get endpoints ai-sre-assistant -n ai-infra-starter-kit
+kubectl get endpoints demo-service -n aiops-lab
+kubectl get endpoints ai-sre-assistant -n aiops-lab
 ```
 
 If a pod is running but not ready, it may not appear as a ready endpoint behind the Service.
@@ -161,7 +161,7 @@ If a pod is running but not ready, it may not appear as a ready endpoint behind 
 Port-forward the demo service:
 
 ```bash
-kubectl port-forward svc/demo-service 8000:8000 -n ai-infra-starter-kit
+kubectl port-forward svc/demo-service 8000:8000 -n aiops-lab
 ```
 
 Check health and readiness:
@@ -174,7 +174,7 @@ curl http://localhost:8000/ready
 Port-forward the assistant:
 
 ```bash
-kubectl port-forward svc/ai-sre-assistant 8001:8001 -n ai-infra-starter-kit
+kubectl port-forward svc/ai-sre-assistant 8001:8001 -n aiops-lab
 ```
 
 Check assistant health:
@@ -188,19 +188,19 @@ curl http://localhost:8001/health
 Restart a Deployment:
 
 ```bash
-kubectl rollout restart deployment/demo-service -n ai-infra-starter-kit
+kubectl rollout restart deployment/demo-service -n aiops-lab
 ```
 
 Watch rollout status:
 
 ```bash
-kubectl rollout status deployment/demo-service -n ai-infra-starter-kit
+kubectl rollout status deployment/demo-service -n aiops-lab
 ```
 
 Watch pods:
 
 ```bash
-kubectl get pods -n ai-infra-starter-kit --watch
+kubectl get pods -n aiops-lab --watch
 ```
 
 This is a useful way to see readiness in action. Kubernetes starts the new pod, waits for it to become ready, and then the Deployment becomes available.
@@ -212,7 +212,7 @@ This is a useful way to see readiness in action. Kubernetes starts the new pod, 
 Check events and probe failures:
 
 ```bash
-kubectl describe pod -l app.kubernetes.io/name=demo-service -n ai-infra-starter-kit
+kubectl describe pod -l app.kubernetes.io/name=demo-service -n aiops-lab
 ```
 
 Then check the app endpoint directly through port-forward:
@@ -233,19 +233,19 @@ Likely causes:
 Check restart count:
 
 ```bash
-kubectl get pods -n ai-infra-starter-kit
+kubectl get pods -n aiops-lab
 ```
 
 Describe the pod:
 
 ```bash
-kubectl describe pod -l app.kubernetes.io/name=demo-service -n ai-infra-starter-kit
+kubectl describe pod -l app.kubernetes.io/name=demo-service -n aiops-lab
 ```
 
 Check logs:
 
 ```bash
-kubectl logs deployment/demo-service -n ai-infra-starter-kit --tail=100
+kubectl logs deployment/demo-service -n aiops-lab --tail=100
 ```
 
 Likely causes:
@@ -262,7 +262,7 @@ Likely causes:
 Check pod details:
 
 ```bash
-kubectl describe pod -l app.kubernetes.io/name=demo-service -n ai-infra-starter-kit
+kubectl describe pod -l app.kubernetes.io/name=demo-service -n aiops-lab
 ```
 
 In a real system, next steps might include:

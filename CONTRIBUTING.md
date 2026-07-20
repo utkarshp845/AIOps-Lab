@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve `ai-infra-starter-kit`.
+Thanks for helping improve AIOps Lab.
 
 The main rule is simple: keep the project beginner-friendly without making it shallow. A new feature should teach a real AI infrastructure concept at the right time.
 

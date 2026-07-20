@@ -1,6 +1,6 @@
 # Kubernetes Production Next Steps
 
-Week 3 Day 7 closes the first Kubernetes chapter of `ai-infra-starter-kit`.
+Week 3 Day 7 closes the first Kubernetes chapter of AIOps Lab.
 
 The local kind setup now teaches the core mapping:
 

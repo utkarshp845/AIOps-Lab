@@ -18,7 +18,7 @@ This keeps the Week 3 path close to the existing Docker workflow.
 
 ## What Each File Does
 
-- `namespace.yaml`: creates the `ai-infra-starter-kit` namespace.
+- `namespace.yaml`: creates the `aiops-lab` namespace.
 - `configmap.yaml`: stores non-secret environment variables.
 - `secret.example.yaml`: documents the optional `OPENAI_API_KEY` Secret shape. Do not put real keys in this file.
 - `storage.yaml`: creates local shared storage for demo logs.
@@ -57,13 +57,13 @@ kubectl version --client
 ## 1. Create A Local Cluster
 
 ```bash
-kind create cluster --name ai-infra-starter-kit
+kind create cluster --name aiops-lab
 ```
 
 Check the cluster:
 
 ```bash
-kubectl cluster-info --context kind-ai-infra-starter-kit
+kubectl cluster-info --context kind-aiops-lab
 ```
 
 ## 2. Build Local Images
@@ -71,8 +71,8 @@ kubectl cluster-info --context kind-ai-infra-starter-kit
 From the repository root:
 
 ```bash
-docker build -t ai-infra-starter-kit/demo-service:local apps/demo-service
-docker build -t ai-infra-starter-kit/ai-sre-assistant:local apps/ai-sre-assistant
+docker build -t aiops-lab/demo-service:local apps/demo-service
+docker build -t aiops-lab/ai-sre-assistant:local apps/ai-sre-assistant
 ```
 
 ## 3. Load Images Into kind
@@ -80,8 +80,8 @@ docker build -t ai-infra-starter-kit/ai-sre-assistant:local apps/ai-sre-assistan
 kind runs its own container runtime inside the cluster node. Loading the images makes them available to Kubernetes.
 
 ```bash
-kind load docker-image ai-infra-starter-kit/demo-service:local --name ai-infra-starter-kit
-kind load docker-image ai-infra-starter-kit/ai-sre-assistant:local --name ai-infra-starter-kit
+kind load docker-image aiops-lab/demo-service:local --name aiops-lab
+kind load docker-image aiops-lab/ai-sre-assistant:local --name aiops-lab
 ```
 
 ## 4. Apply Manifests
@@ -112,14 +112,14 @@ kubectl apply -f infra/k8s/ai-sre-assistant.yaml
 ## 5. Wait For Apps
 
 ```bash
-kubectl wait --for=condition=available deployment/demo-service -n ai-infra-starter-kit --timeout=120s
-kubectl wait --for=condition=available deployment/ai-sre-assistant -n ai-infra-starter-kit --timeout=120s
+kubectl wait --for=condition=available deployment/demo-service -n aiops-lab --timeout=120s
+kubectl wait --for=condition=available deployment/ai-sre-assistant -n aiops-lab --timeout=120s
 ```
 
 Inspect what is running:
 
 ```bash
-kubectl get pods,svc,pvc -n ai-infra-starter-kit
+kubectl get pods,svc,pvc -n aiops-lab
 ```
 
 For a more complete operations and troubleshooting checklist, see `../../docs/10-kubernetes-operations-runbook.md`.
@@ -135,13 +135,13 @@ For local-vs-production Kubernetes next steps, see `../../docs/14-kubernetes-pro
 Open one terminal for `demo-service`:
 
 ```bash
-kubectl port-forward svc/demo-service 8000:8000 -n ai-infra-starter-kit
+kubectl port-forward svc/demo-service 8000:8000 -n aiops-lab
 ```
 
 Open another terminal for `ai-sre-assistant`:
 
 ```bash
-kubectl port-forward svc/ai-sre-assistant 8001:8001 -n ai-infra-starter-kit
+kubectl port-forward svc/ai-sre-assistant 8001:8001 -n aiops-lab
 ```
 
 Now the services are available locally:
@@ -188,14 +188,14 @@ curl -s -X POST http://localhost:8001/summarize-incident \
 View logs:
 
 ```bash
-kubectl logs deployment/demo-service -n ai-infra-starter-kit
-kubectl logs deployment/ai-sre-assistant -n ai-infra-starter-kit
+kubectl logs deployment/demo-service -n aiops-lab
+kubectl logs deployment/ai-sre-assistant -n aiops-lab
 ```
 
 Describe a pod if something is not ready:
 
 ```bash
-kubectl describe pod -l app.kubernetes.io/name=demo-service -n ai-infra-starter-kit
+kubectl describe pod -l app.kubernetes.io/name=demo-service -n aiops-lab
 ```
 
 ## 11. Cleanup
@@ -203,19 +203,19 @@ kubectl describe pod -l app.kubernetes.io/name=demo-service -n ai-infra-starter-
 Delete the namespace:
 
 ```bash
-kubectl delete namespace ai-infra-starter-kit
+kubectl delete namespace aiops-lab
 ```
 
 Delete the local persistent volume if it remains:
 
 ```bash
-kubectl delete pv ai-infra-shared-logs
+kubectl delete pv aiops-shared-logs
 ```
 
 Delete the kind cluster:
 
 ```bash
-kind delete cluster --name ai-infra-starter-kit
+kind delete cluster --name aiops-lab
 ```
 
 ## Kubernetes Objects In Plain English

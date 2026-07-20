@@ -7,7 +7,7 @@ import urllib.request
 
 
 def call(url: str) -> tuple[int, str]:
-    request = urllib.request.Request(url, headers={"User-Agent": "ai-infra-starter-kit-traffic/0.1"})
+    request = urllib.request.Request(url, headers={"User-Agent": "aiops-lab-traffic/0.1"})
     try:
         with urllib.request.urlopen(request, timeout=10) as response:
             body = response.read().decode("utf-8")
