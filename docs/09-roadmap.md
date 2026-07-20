@@ -1,5 +1,7 @@
 # Roadmap
 
+This is the canonical execution order for AIOps Lab. Weeks 1-4 are the completed learning foundation, Weeks 5-8 are the next measurement cycle, and later phases remain gated by evidence and named operational ownership.
+
 ## Week 1 - Local Learning Lab
 
 - Local demo-service.
@@ -35,20 +37,72 @@
 - Optional advanced serving roadmap: vLLM, Triton, Ray, KServe, and GPU scheduling.
 - Production-readiness review with local and CI release gates.
 
-## Later
+## Week 5 - Provider Telemetry
 
-- OpenTelemetry collector.
-- Log backend integration.
-- Prometheus and Grafana or managed observability.
-- Privacy-aware product usage and outcome telemetry.
-- Ingress and TLS walkthrough.
-- External secrets workflow.
-- Horizontal Pod Autoscaling.
+- Capture provider and model identity, request latency, token usage, failures, and deterministic fallback outcomes.
+- Keep prompts, incident evidence, secrets, and model responses out of metrics.
+- Expose bounded usage metadata for quality and cost comparisons.
+- Calculate cost per successful evaluated analysis.
+
+**Exit gate:** provider usage, reliability, and cost can be compared with evaluation outcomes without storing sensitive content.
+
+## Week 6 - Evaluation Maturity
+
+- Expand the corpus with sanitized incidents, adversarial inputs, prompt-injection cases, incorrect-confidence cases, and redaction edge cases.
+- Version the corpus, assistant configuration, and acceptance thresholds together.
+- Produce machine-readable evaluation results in CI.
+- Keep privacy and safety as hard release gates.
+
+**Exit gate:** a model, prompt, provider, or code change produces a repeatable regression report and cannot bypass required privacy or safety checks.
+
+## Week 7 - Production Signal Path
+
+- Standardize structured stdout logs and cross-service correlation fields.
+- Add an optional OpenTelemetry Collector path after signal contracts are stable.
+- Add a small dashboard and one actionable, owned alert.
+- Exercise one incident from alert through evidence, assistant analysis, runbook action, and recovery review.
+
+**Exit gate:** the project demonstrates a complete symptom-to-recovery workflow without changing the dependency-light quickstart.
+
+## Week 8 - Provider Versus Private Endpoint Benchmark
+
+- Run the same evaluation corpus against deterministic, managed-provider, and OpenAI-compatible private endpoints.
+- Measure quality, latency, token usage, fallbacks, throughput, and cost per successful evaluated analysis.
+- Test representative input sizes, concurrency, and burst behavior.
+- Record a build-versus-buy decision before adding GPU infrastructure.
+
+**Exit gate:** evidence supports continuing with a provider or starting one bounded private-model experiment.
+
+## Internal Pilot Phase
+
+Begin only after the Week 5-8 measurement loop works and the promotion gates in the production-readiness review have named owners.
+
+- Authentication, service identity, and role-based access.
+- Managed secrets, rotation, artifact pinning, and supply-chain scanning.
+- Ingress, TLS, environment separation, and hardened deployment automation.
+- Centralized telemetry, retention policies, audit records, quotas, and budgets.
+- Initial SLOs, routed alerts, rollback tests, and recovery exercises.
+- Private evaluation datasets and controlled evidence access.
+
+**Exit gate:** a sanitized internal pilot can operate with explicit ownership, access controls, measurable reliability, and a tested rollback path.
+
+## Advanced Serving Phase - Only If Earned
+
+- Test one approved model behind an authenticated OpenAI-compatible endpoint.
+- Add an optional single-GPU vLLM example only when the Week 8 benchmark or a deployment requirement justifies it.
+- Add GPU scheduling, quotas, utilization telemetry, queue metrics, and out-of-memory recovery tests for a real workload.
+- Introduce Ray Serve, Triton, or KServe only when its specific orchestration problem appears.
+- Consider enterprise VPC, dedicated, or on-premises packaging after customer demand is validated.
+
+The default project remains deterministic, provider-compatible, laptop-friendly, and GPU-free throughout these phases.
+
+## Longer-Term Product Backlog
+
 - Hosted evaluation history and regression alerts.
-- Private incident datasets and release gates.
-- Model and provider quality/cost comparisons.
-- Provider versus self-hosted inference benchmark harness.
-- Optional single-GPU vLLM deployment example.
-- Enterprise VPC and on-premises deployment path.
-- AI assistant guardrails.
-- Cloud deployment examples.
+- Team collaboration and private incident datasets.
+- Audit-ready exports, policy controls, and usage governance.
+- Privacy-aware product outcome telemetry.
+- Provider and model quality/cost comparisons over time.
+- Log, metrics, and trace backend examples using Prometheus, Grafana, compatible open-source components, or managed services.
+- Multi-environment and cloud deployment examples.
+- Horizontal Pod Autoscaling for measured non-GPU workloads.

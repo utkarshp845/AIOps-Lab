@@ -194,14 +194,18 @@ Before committing to a serving platform, require:
 
 ## Recommended Implementation Order
 
-1. Capture provider token usage, model identity, latency, outcome, and fallback metrics.
-2. Add a provider-versus-self-host benchmark harness using the existing evaluation corpus.
-3. Test one approved model behind an authenticated OpenAI-compatible endpoint.
-4. Add an optional single-GPU deployment example without changing the default quickstart.
-5. Prove quality, reliability, and unit economics under representative load.
-6. Add Kubernetes GPU scheduling and observability for a real deployment requirement.
-7. Introduce Ray Serve, Triton, or KServe only when its specific orchestration problem appears.
-8. Package private deployment, governance, metering, and support around validated customer demand.
+The first four steps are the measurement work scheduled for Weeks 5-8 of the [project roadmap](09-roadmap.md). Serving infrastructure begins only when those steps support it:
+
+1. Capture provider token usage, model identity, latency, outcome, fallback, and cost metadata in Week 5.
+2. Expand and version the evaluation corpus in Week 6 so every candidate uses the same privacy and safety gates.
+3. Stabilize the optional production signal path and operational exercise in Week 7.
+4. Run the provider-versus-private-endpoint benchmark and record the build-versus-buy decision in Week 8.
+5. Test one approved model behind an authenticated OpenAI-compatible endpoint only when the decision supports it.
+6. Add an optional single-GPU deployment example without changing the default quickstart.
+7. Prove quality, reliability, and unit economics under representative load.
+8. Add Kubernetes GPU scheduling and observability for a real deployment requirement.
+9. Introduce Ray Serve, Triton, or KServe only when its specific orchestration problem appears.
+10. Package private deployment, governance, metering, and support around validated customer demand.
 
 ## Day 6 Definition Of Done
 

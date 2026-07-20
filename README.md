@@ -19,7 +19,7 @@ local app -> AI service -> logs/metrics -> AI SRE assistant -> observability -> 
 - `demo-service`: a FastAPI service that behaves like a small production API.
 - `ai-sre-assistant`: a FastAPI service and CLI that reads demo logs and metrics, then explains incidents.
 - Docker Compose wiring so both services share the same log file locally.
-- Tests, sample logs, docs, and a 30-day roadmap for building in public.
+- Tests, sample logs, docs, and a phased roadmap for building in public.
 - Incident walkthroughs that show how to reason from symptoms, metrics, logs, and safe next steps.
 - A runnable assistant evaluation corpus with grounded, useful, safe, private, and honest checks.
 
@@ -171,6 +171,12 @@ You should see the assistant report intentionally generated 500s, latency spikes
 - Week 2: observability basics, metrics, dashboards, structured logging, incident examples.
 - Week 3: Kubernetes manifests, operations, config/secrets, probes/resources, incident debugging, production next steps.
 - Week 4: security hardening, cost optimization, evaluation, production observability, advanced serving decisions, and a release-gated production-readiness review.
+- Week 5: privacy-safe provider, model, latency, token, failure, fallback, and cost telemetry.
+- Week 6: a larger versioned evaluation corpus with machine-readable CI regression reports.
+- Week 7: an optional OpenTelemetry signal path plus one owned alert-to-runbook exercise.
+- Week 8: a provider-versus-private-endpoint benchmark and an evidence-backed build-versus-buy decision.
+
+Internal-pilot hardening and advanced model serving come only after those measurement gates pass. See `docs/09-roadmap.md` for exit criteria and later phases.
 
 ## Build In Public
 

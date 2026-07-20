@@ -181,4 +181,4 @@ The default AIOps Lab setup should remain dependency-light. A production stack b
 
 ## What Comes Next
 
-This guide defines the upgrade path; it does not install a production stack into the beginner workflow. Later optional work can add an OpenTelemetry Collector, backend examples, dashboard definitions, alert rules, and provider usage metrics one layer at a time.
+This guide defines the upgrade path; it does not install a production stack into the beginner workflow. The [project roadmap](09-roadmap.md) schedules provider telemetry for Week 5, evaluation maturity for Week 6, and the optional OpenTelemetry signal path plus one alert-to-runbook exercise for Week 7. Backend examples and broader dashboard or alert coverage remain later additions driven by measured operating needs.
