@@ -666,3 +666,51 @@ What comes next:
 - Add an optional telemetry collector only after signal contracts are stable.
 - Exercise one alert and runbook path end to end.
 - Benchmark provider and private endpoints before introducing GPU infrastructure.
+
+## Week 5, Day 1 - Provider Telemetry Contract
+
+Today I started the Week 5 measurement cycle by making optional provider behavior visible without recording sensitive incident content.
+
+Week 4 established redaction, prompt bounds, deterministic evaluation, and production-readiness gates. Week 5 starts with the metadata needed to compare provider reliability, quality, and cost honestly.
+
+What changed:
+
+- Added a structured LLM call result with analysis, notice, and bounded telemetry.
+- Added provider and model labels without exposing the provider base URL.
+- Added configuration, attempt, success, failure, and fallback state.
+- Measured provider request latency with a monotonic clock.
+- Normalized OpenAI-compatible prompt, completion, and total token usage when reported.
+- Kept missing or malformed usage honest with explicit `null` values and `reported=false`.
+- Exposed the same `llm_telemetry` contract from log analysis, questions, and incident summaries.
+- Added tests for successful usage, latency, provider failure, unconfigured fallback, both API paths, and telemetry privacy.
+- Added a provider telemetry guide with field semantics, forbidden data, customer value, and the remaining Week 5 sequence.
+- Restored the canonical Weeks 5-8 technical roadmap while preserving the audience and design-partner gates in the commercialization roadmap.
+
+Why this matters:
+
+A provider call should not be a black box. Teams need to know whether enrichment ran, whether it failed safely, how long it took, and whether the provider reported usage. Those facts are the foundation for comparing quality and cost later.
+
+The metadata boundary matters just as much as the fields. Prompt text, incident evidence, credentials, endpoint URLs, generated output, and customer identifiers do not belong in provider telemetry.
+
+Customer and monetization value:
+
+- Design partners can distinguish successful enrichment from silent deterministic fallback.
+- Teams can later compare provider latency and token usage with evaluated quality.
+- Cost can be measured per successful analysis instead of per token in isolation.
+- Managed and private OpenAI-compatible endpoints share the same outcome contract.
+- Completing this local contract does not skip the commercialization roadmap's discovery or design-partner gates.
+
+Lessons learned:
+
+- Missing usage metadata is not zero usage; it is unknown and should be represented honestly.
+- Provider failure and provider-not-configured are different operational outcomes.
+- A monotonic clock is the right boundary for request duration.
+- Useful telemetry can remain small, bounded, and free of incident content.
+- Per-request metadata should come before aggregate metrics, billing ledgers, or dashboards.
+
+What comes next:
+
+- Add bounded aggregate counters and latency distributions.
+- Define explicit pricing inputs without hard-coding unstable provider prices.
+- Join provider usage and cost with evaluation outcomes.
+- Calculate and report cost per successful evaluated analysis.

@@ -70,7 +70,7 @@ A future instrumentation pass can use a bounded metric contract like this:
 | `ai_sre_eval_checks_total` | `suite`, `dimension`, `result`, `assistant_version` | Quality and release-gate trends. |
 | `ai_sre_provider_tokens_total` | `provider`, `model`, `direction` | Token usage for quality/cost comparisons. |
 
-These names are a proposed contract, not metrics implemented in Day 5. Request IDs and workspace IDs should not be added as metric labels. Per-customer billing or audit attribution belongs in a controlled event ledger with its own access and retention policy.
+Week 5 Day 1 implements per-request provider, model, outcome, fallback, latency, and token-usage metadata in API responses. The metric names above remain a proposed aggregate contract. Request IDs and workspace IDs should not be added as metric labels. Per-customer billing or audit attribution belongs in a controlled event ledger with its own access and retention policy.
 
 Do not place full prompts, log evidence, model responses, API keys, or incident payloads in metrics. Detailed audit records require separate access, retention, and redaction controls.
 
@@ -181,4 +181,4 @@ The default AIOps Lab setup should remain dependency-light. A production stack b
 
 ## What Comes Next
 
-This guide defines the upgrade path; it does not install a production stack into the beginner workflow. Later optional work can add an OpenTelemetry Collector, backend examples, dashboard definitions, alert rules, and provider usage metrics one layer at a time.
+This guide defines the upgrade path; it does not install a production stack into the beginner workflow. The [project roadmap](09-roadmap.md) schedules provider telemetry for Week 5, evaluation maturity for Week 6, and the optional OpenTelemetry signal path plus one alert-to-runbook exercise for Week 7. Backend examples and broader dashboard or alert coverage remain later additions driven by measured operating needs.

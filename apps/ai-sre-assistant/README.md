@@ -80,6 +80,14 @@ API responses that attempt LLM enrichment include `llm_cost_controls` so callers
 
 See `../../docs/16-cost-optimization.md` for the Day 3 cost optimization guide.
 
+## Provider Telemetry
+
+When `use_llm=true`, LLM-enabled API responses include `llm_telemetry` with bounded provider and model labels, configuration and attempt state, success or fallback outcome, request latency, and normalized token usage when the provider reports it.
+
+The telemetry object never includes prompts, incident evidence, credentials, provider base URLs, generated output, or user and incident identifiers. It is per-request metadata, not yet a persistent usage ledger, billing record, cost estimate, or Prometheus metrics implementation.
+
+See `../../docs/22-provider-telemetry.md` for field semantics, privacy rules, failure behavior, and the remaining Week 5 sequence.
+
 ## Evaluation
 
 The assistant includes a deterministic incident corpus and a five-part quality rubric. Run it locally from this directory:

@@ -99,6 +99,8 @@ For the Week 4 release gates, readiness verdict, and next-stage priorities, see 
 
 For the phased commercialization roadmap with milestones and success metrics, see `docs/21-commercialization-roadmap.md`.
 
+For the Week 5 provider telemetry contract and privacy boundary, see `docs/22-provider-telemetry.md`.
+
 Ask the assistant directly:
 
 ```bash
@@ -144,6 +146,7 @@ AIOps-Lab/
     19-advanced-model-serving-roadmap.md
     20-production-readiness-review.md
     21-commercialization-roadmap.md
+    22-provider-telemetry.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
   scripts/               # Local traffic and log helper scripts
@@ -174,6 +177,12 @@ You should see the assistant report intentionally generated 500s, latency spikes
 - Week 2: observability basics, metrics, dashboards, structured logging, incident examples.
 - Week 3: Kubernetes manifests, operations, config/secrets, probes/resources, incident debugging, production next steps.
 - Week 4: security hardening, cost optimization, evaluation, production observability, advanced serving decisions, and a release-gated production-readiness review.
+- Week 5: privacy-safe provider identity, latency, usage, outcome, fallback, and cost telemetry.
+- Week 6: a larger versioned evaluation corpus with machine-readable CI regression reports.
+- Week 7: an optional OpenTelemetry signal path plus one owned alert-to-runbook exercise.
+- Week 8: a provider-versus-private-endpoint benchmark and an evidence-backed build-versus-buy decision.
+
+The technical weeks run alongside the commercialization phases; they do not bypass audience, design-partner, or willingness-to-pay gates. See `docs/09-roadmap.md` and `docs/21-commercialization-roadmap.md`.
 
 ## Build In Public
 

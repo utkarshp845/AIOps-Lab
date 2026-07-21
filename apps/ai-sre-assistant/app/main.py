@@ -91,17 +91,18 @@ def summarize_incident(request: SummarizeIncidentRequest) -> dict[str, Any]:
     if request.use_llm:
         llm_config = load_config()
         response["llm_cost_controls"] = cost_controls_summary(llm_config)
-        llm_analysis, llm_notice = analyze_with_llm(
+        llm_result = analyze_with_llm(
             question=question,
             logs=[],
             rule_based_analysis=response,
             config=llm_config,
         )
-        if llm_analysis:
+        response["llm_telemetry"] = llm_result.telemetry
+        if llm_result.analysis:
             response["analysis_mode"] = "llm"
-            response["llm_analysis"] = llm_analysis
-        if llm_notice:
-            response["llm_notice"] = llm_notice
+            response["llm_analysis"] = llm_result.analysis
+        if llm_result.notice:
+            response["llm_notice"] = llm_result.notice
 
     return redact_data(response)
 
@@ -123,17 +124,18 @@ def _analyze(question: str, max_lines: int, use_llm: bool) -> dict[str, Any]:
     if use_llm:
         llm_config = load_config()
         response["llm_cost_controls"] = cost_controls_summary(llm_config)
-        llm_analysis, llm_notice = analyze_with_llm(
+        llm_result = analyze_with_llm(
             question=question,
             logs=logs,
             rule_based_analysis=rule_based,
             config=llm_config,
         )
-        if llm_analysis:
+        response["llm_telemetry"] = llm_result.telemetry
+        if llm_result.analysis:
             response["analysis_mode"] = "llm"
-            response["llm_analysis"] = llm_analysis
-        if llm_notice:
-            response["llm_notice"] = llm_notice
+            response["llm_analysis"] = llm_result.analysis
+        if llm_result.notice:
+            response["llm_notice"] = llm_result.notice
 
     return redact_data(response)
 

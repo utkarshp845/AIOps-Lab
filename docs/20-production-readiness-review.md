@@ -68,15 +68,16 @@ Any failed privacy or safety gate is a no-go. Other exceptions need a named owne
 
 ## First 30 Days After This Milestone
 
-The next work should deepen measured contracts before adding infrastructure breadth:
+The next four technical weeks deepen measured contracts before adding infrastructure breadth. They match the canonical sequence in the [project roadmap](09-roadmap.md) and do not bypass the audience or design-partner gates in the [commercialization roadmap](21-commercialization-roadmap.md).
 
-1. Capture provider model, latency, token usage, failure, and fallback metadata without storing prompt content.
-2. Expand the evaluation corpus with sanitized incidents and version its acceptance thresholds.
-3. Add optional OpenTelemetry collection after log, metric, and trace field contracts are stable.
-4. Turn one incident walkthrough into an alert-to-runbook exercise with an owner and measurable recovery result.
-5. Build a provider-versus-private-endpoint benchmark harness before adding a GPU deployment example.
+| Week | Focus | Required outcome |
+| --- | --- | --- |
+| 5 | Provider telemetry | Start with the privacy-safe per-call contract, then aggregate model, latency, token usage, failure, fallback, and cost metadata and compare it with evaluation outcomes. |
+| 6 | Evaluation maturity | Expand and version sanitized and adversarial cases, produce machine-readable CI results, and preserve privacy and safety as hard gates. |
+| 7 | Production signal path | Add optional OpenTelemetry collection only after signal contracts are stable, then exercise one owned alert-to-runbook recovery flow. |
+| 8 | Provider versus private benchmark | Compare deterministic, provider, and compatible private endpoints with the same corpus and record a build-versus-buy decision. |
 
-vLLM, Triton, Ray Serve, KServe, GPU scheduling, multi-tenancy, and paid platform features stay behind demonstrated demand and the adoption gates already documented in the advanced serving roadmap.
+Internal-pilot controls begin only after this measurement loop works and customer discovery supports a design-partner deployment. vLLM, Triton, Ray Serve, KServe, GPU scheduling, multi-tenancy, and paid platform features stay behind demonstrated demand and the adoption gates in the [advanced model serving roadmap](19-advanced-model-serving-roadmap.md).
 
 ## Day 7 Definition Of Done
 

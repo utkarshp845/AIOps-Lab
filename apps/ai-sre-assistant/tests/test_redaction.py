@@ -112,16 +112,21 @@ def test_llm_boundary_redacts_every_prompt_input(monkeypatch):
         model="test-model",
     )
 
-    result, notice = analyze_with_llm(
+    result = analyze_with_llm(
         question="Investigate password=question-secret",
         logs=[{"authorization": "Bearer log-secret", "message": "sk-example123456 failed"}],
         rule_based_analysis={"summary": "access_token=analysis-secret"},
         config=config,
     )
     prompt = captured["payload"]["messages"][1]["content"]
+    telemetry = json.dumps(result.telemetry)
 
-    assert result == f"Safe analysis; Bearer {REDACTED}"
-    assert notice is None
+    assert result.analysis == f"Safe analysis; Bearer {REDACTED}"
+    assert result.notice is None
+    assert "provider-secret" not in telemetry
+    assert "question-secret" not in telemetry
+    assert "log-secret" not in telemetry
+    assert "analysis-secret" not in telemetry
     assert prompt.count(REDACTED) == 4
     assert "question-secret" not in prompt
     assert "log-secret" not in prompt

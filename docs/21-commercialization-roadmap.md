@@ -58,7 +58,7 @@ The wedge thesis: teams will adopt an incident analyst they can hold to a measur
 | Milestone | Definition of done |
 | --- | --- |
 | First real connector | Read-only connector to one real log source (CloudWatch Logs, Loki, or Datadog), honoring the existing bounded-query and redaction policies. The shared-file path remains the learning default. |
-| Provider metering | Model identity, latency, token usage, fallback outcome, and cost per successful analysis captured as metrics without storing prompt content (item 1 from `docs/20-production-readiness-review.md`). |
+| Provider metering | Build on the Week 5 per-request contract: aggregate model identity, latency, token usage, fallback outcome, and cost per successful evaluated analysis without storing prompt or incident content. The milestone is incomplete until design-partner usage is measurable. |
 | Private incident sets | A team can record sanitized incidents from their own systems and run the evaluation corpus against them in CI, blocking regressions. |
 | Minimum viable trust | OIDC/SSO authentication, per-user audit log of evidence access, and a documented single-tenant deployment using the existing Kubernetes manifests. |
 | Design partners | Two or three teams running the assistant against sanitized real data weekly, with a shared feedback channel and written usage notes. |
