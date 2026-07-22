@@ -64,13 +64,13 @@ A future instrumentation pass can use a bounded metric contract like this:
 | --- | --- | --- |
 | `ai_sre_analysis_requests_total` | `endpoint`, `analysis_mode`, `outcome` | Request volume and completion outcomes. |
 | `ai_sre_analysis_duration_seconds` | `endpoint`, `analysis_mode` | End-to-end latency distribution. |
-| `ai_sre_fallbacks_total` | `reason` | Deterministic fallback behavior. |
+| `ai_sre_provider_fallbacks_total` | `provider`, `model`, `reason` | Deterministic provider fallback behavior. |
 | `ai_sre_prompt_truncations_total` | `reason` | Cost-control activation. |
 | `ai_sre_redactions_total` | `rule_category` | Redaction activity without sensitive values. |
 | `ai_sre_eval_checks_total` | `suite`, `dimension`, `result`, `assistant_version` | Quality and release-gate trends. |
 | `ai_sre_provider_tokens_total` | `provider`, `model`, `direction` | Token usage for quality/cost comparisons. |
 
-Week 5 Day 1 implements per-request provider, model, outcome, fallback, latency, and token-usage metadata in API responses. The metric names above remain a proposed aggregate contract. Request IDs and workspace IDs should not be added as metric labels. Per-customer billing or audit attribution belongs in a controlled event ledger with its own access and retention policy.
+Week 5 Days 1 and 2 implement per-request metadata plus process-local Prometheus aggregates for provider outcomes, attempted-request latency, deterministic fallbacks, and reported input/output tokens. Broader end-to-end analysis, truncation, redaction, and evaluation metrics above remain proposed. Request IDs and workspace IDs should not be added as metric labels. Per-customer billing or audit attribution belongs in a controlled event ledger with its own access and retention policy.
 
 Do not place full prompts, log evidence, model responses, API keys, or incident payloads in metrics. Detailed audit records require separate access, retention, and redaction controls.
 
