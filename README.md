@@ -70,6 +70,7 @@ Useful local URLs:
 - Demo metrics: `http://localhost:8000/metrics`
 - AI SRE Assistant: `http://localhost:8001`
 - AI SRE health: `http://localhost:8001/health`
+- AI SRE provider metrics: `http://localhost:8001/metrics`
 
 For the kind-based Kubernetes walkthrough, see `infra/k8s/README.md`.
 
@@ -99,7 +100,7 @@ For the Week 4 release gates, readiness verdict, and next-stage priorities, see 
 
 For the phased commercialization roadmap with milestones and success metrics, see `docs/21-commercialization-roadmap.md`.
 
-For the Week 5 provider telemetry contract and privacy boundary, see `docs/22-provider-telemetry.md`.
+For the Week 5 provider telemetry contract, aggregate metrics, and privacy boundary, see `docs/22-provider-telemetry.md`.
 
 Ask the assistant directly:
 

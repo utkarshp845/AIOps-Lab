@@ -714,3 +714,43 @@ What comes next:
 - Define explicit pricing inputs without hard-coding unstable provider prices.
 - Join provider usage and cost with evaluation outcomes.
 - Calculate and report cost per successful evaluated analysis.
+
+## Week 5, Day 2 - Provider Aggregate Metrics
+
+Today I turned the per-request provider contract into privacy-safe operational aggregates.
+
+Day 1 made each provider attempt visible to its caller. Day 2 makes trends scrapeable without retaining prompts, incident evidence, generated content, customer identifiers, or arbitrary error text.
+
+What changed:
+
+- Added an in-memory, dependency-free provider metrics registry to the AI SRE Assistant.
+- Counted enrichment outcomes across success, failure, and provider-not-configured paths.
+- Added a fixed-bucket latency histogram for attempted provider requests.
+- Counted deterministic fallbacks by the two supported reasons.
+- Accumulated valid provider-reported input and output tokens while keeping missing usage unknown.
+- Exposed the aggregates as Prometheus text at `GET /metrics`.
+- Limited labels to deployment-configured provider/model values and fixed outcome, reason, and direction enums.
+- Mapped unexpected enum values to bounded fallback labels instead of accepting arbitrary strings.
+- Added tests for counters, cumulative latency buckets, token totals, fallbacks, malformed values, privacy, and the metrics endpoint.
+- Updated the roadmap and telemetry guide to mark Day 2 complete and define the remaining Week 5 sequence.
+
+Why this matters:
+
+Per-request metadata helps debug one analysis. Aggregate counters and distributions reveal whether provider enrichment is reliable, fast, and consistently reporting usage across many analyses. That is the evidence needed before pricing and quality are joined later in the week.
+
+The privacy and cardinality boundaries are part of the feature. Prompts, evidence, errors, endpoints, request IDs, users, workspaces, and incidents never become labels. Process-local metrics also remain honest about their limits: they reset on restart and are not a billing ledger.
+
+Lessons learned:
+
+- Latency needs a distribution; an average hides slow tails.
+- Not configured is an outcome, but it is not an attempted provider request and should not enter request-latency buckets.
+- Missing token usage is unknown, not zero.
+- Configured provider/model labels are useful only with an explicit cardinality budget.
+- Operational metrics and durable customer metering are different systems with different access and retention requirements.
+
+What comes next:
+
+- Define explicit pricing inputs without hard-coding unstable provider prices.
+- Calculate estimated cost metadata from reported usage.
+- Join cost and provider outcomes with evaluation results.
+- Report cost per successful evaluated analysis.

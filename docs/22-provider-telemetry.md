@@ -1,6 +1,6 @@
 # Provider Telemetry Contract
 
-Week 5, Day 1 establishes the privacy-safe metadata contract for optional LLM calls.
+Week 5, Days 1 and 2 establish privacy-safe per-request metadata and process-local aggregate metrics for optional LLM calls.
 
 The assistant already bounded prompts and fell back to deterministic analysis. The missing foundation was a consistent way to answer: which provider path was selected, was a request attempted, did it succeed, how long did it take, did the provider report token usage, and did the deterministic fallback protect the user?
 
@@ -29,7 +29,7 @@ When `use_llm=true`, `/ask`, `/analyze/logs`, and `/summarize-incident` include 
 }
 ```
 
-The contract is per request. It is not yet a persistent usage ledger, billing record, Prometheus metric implementation, or cost estimate.
+This API contract is per request. Day 2 also aggregates its bounded fields as Prometheus text; neither surface is a persistent usage ledger, billing record, or cost estimate.
 
 ## Field Semantics
 
@@ -49,6 +49,36 @@ The contract is per request. It is not yet a persistent usage ledger, billing re
 | `usage.total_tokens` | Provider total, or the sum of valid input and output counts when both exist. |
 
 Unknown, negative, boolean, or malformed token values are treated as unavailable. Providers may omit usage; omission does not turn a successful analysis into a failure.
+
+## Aggregate Metrics
+
+`GET /metrics` on the AI SRE Assistant exposes four process-local metric families:
+
+| Metric | Type | Labels | Meaning |
+| --- | --- | --- | --- |
+| `ai_sre_provider_analyses_total` | Counter | `provider`, `model`, `outcome` | LLM enrichment selections, including successful, failed, and not-configured outcomes. |
+| `ai_sre_provider_request_duration_seconds` | Histogram | `provider`, `model`, `outcome` | Latency distribution for attempted provider requests only. |
+| `ai_sre_provider_fallbacks_total` | Counter | `provider`, `model`, `reason` | Deterministic fallbacks caused by missing configuration or request failure. |
+| `ai_sre_provider_tokens_total` | Counter | `provider`, `model`, `direction` | Provider-reported input and output tokens; missing usage is not treated as zero. |
+
+The histogram uses fixed buckets from 50 milliseconds through the 30-second request timeout plus `+Inf`. Unconfigured selections increment the analysis and fallback counters but do not create a provider-request latency observation.
+
+These aggregates are intentionally in memory and reset when the assistant process restarts. Durable metering, billing attribution, retention, multi-process aggregation, and customer-level usage history remain separate production concerns.
+
+### Label Boundary
+
+Provider and model values come only from deployment configuration, pass through redaction, and are limited to 100 characters. Outcome, fallback reason, and token direction use fixed enums. The registry maps unexpected enum values to `unknown` or `other` rather than accepting arbitrary strings.
+
+The aggregate contract never labels metrics with prompts, evidence, generated content, provider endpoints, errors, request IDs, users, workspaces, customers, or incidents. Operators should also keep the number of configured provider/model pairs within an explicit cardinality budget.
+
+Example:
+
+```text
+ai_sre_provider_analyses_total{provider="openai",model="approved-model",outcome="success"} 12
+ai_sre_provider_request_duration_seconds_bucket{provider="openai",model="approved-model",outcome="success",le="1"} 9
+ai_sre_provider_fallbacks_total{provider="openai",model="approved-model",reason="provider_request_failed"} 2
+ai_sre_provider_tokens_total{provider="openai",model="approved-model",direction="input"} 5040
+```
 
 ## Outcomes And Fallbacks
 
@@ -102,11 +132,21 @@ Do not attach customer identifiers to future Prometheus labels. Per-team billing
 - Both LLM-enabled API flows expose the same contract.
 - Success, failure, fallback, usage, latency, and privacy behavior have deterministic tests.
 
+## Day 2 Definition Of Done
+
+- Provider outcome selections are counted across success, failure, and not-configured paths.
+- Attempted requests populate a fixed latency histogram with count and sum.
+- Deterministic fallback reasons are counted separately.
+- Valid provider-reported input and output tokens are accumulated without converting unknown usage to zero.
+- Labels are limited to configured provider/model values and fixed enums.
+- Sensitive payload fields and arbitrary error text never enter the aggregate metrics.
+- The assistant exposes the contract as Prometheus text at `GET /metrics`.
+- Aggregation, histogram, fallback, token, malformed-value, privacy, and endpoint behavior have deterministic tests.
+
 ## Remaining Week 5 Sequence
 
-1. Add bounded aggregate counters and latency distributions without high-cardinality labels.
-2. Define explicit model pricing inputs and estimated cost metadata without hard-coding unstable prices.
-3. Join provider outcomes and cost with evaluation results to calculate cost per successful evaluated analysis.
-4. Add a local comparison report across deterministic and configured provider paths.
-5. Exercise provider failure and fallback behavior end to end.
-6. Close the week with an exit-gate review against the technical and commercialization roadmaps.
+1. Define explicit model pricing inputs and estimated cost metadata without hard-coding unstable prices.
+2. Join provider outcomes and cost with evaluation results to calculate cost per successful evaluated analysis.
+3. Add a local comparison report across deterministic and configured provider paths.
+4. Exercise provider failure and fallback behavior end to end.
+5. Close the week with an exit-gate review against the technical and commercialization roadmaps.

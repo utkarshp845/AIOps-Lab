@@ -43,13 +43,13 @@ The [commercialization roadmap](21-commercialization-roadmap.md) runs alongside 
 
 ## Week 5 - Provider Telemetry
 
-- Day 1: expose a bounded per-call contract for provider/model identity, request latency, token usage, outcome, and deterministic fallback without storing sensitive content.
-- Add aggregate counters and latency distributions with bounded labels.
+- Day 1 - complete: expose a bounded per-call contract for provider/model identity, request latency, token usage, outcome, and deterministic fallback without storing sensitive content.
+- Day 2 - complete: add aggregate counters and latency distributions with bounded labels.
 - Define explicit pricing inputs and estimated cost metadata without hard-coding unstable provider prices.
 - Join provider usage and cost with evaluation outcomes.
 - Calculate cost per successful evaluated analysis.
 
-See [Provider Telemetry Contract](22-provider-telemetry.md) for the Day 1 API contract, privacy boundary, and remaining-week sequence.
+See [Provider Telemetry Contract](22-provider-telemetry.md) for the Day 1 per-request contract, Day 2 aggregate metrics, privacy boundary, and remaining-week sequence.
 
 **Exit gate:** provider usage, reliability, and cost can be compared with evaluation outcomes without storing prompts, incident evidence, credentials, endpoints, or generated content.
 

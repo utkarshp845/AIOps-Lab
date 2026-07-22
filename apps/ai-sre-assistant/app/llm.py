@@ -7,6 +7,7 @@ from typing import Any
 import httpx
 
 from app.prompts import ANALYSIS_INSTRUCTIONS, SYSTEM_PROMPT
+from app.provider_metrics import PROVIDER_METRICS
 from app.redaction import redact_data, redact_text
 
 
@@ -215,7 +216,7 @@ def _telemetry(
     request_latency_ms: float | None = None,
     usage: Any = None,
 ) -> dict[str, Any]:
-    return {
+    telemetry = {
         "provider": _bounded_label(config.provider or "none"),
         "model": _bounded_label(config.model) if configured else None,
         "configured": configured,
@@ -226,6 +227,8 @@ def _telemetry(
         "fallback_reason": fallback_reason,
         "usage": _normalize_usage(usage),
     }
+    PROVIDER_METRICS.observe(telemetry)
+    return telemetry
 
 
 def _normalize_usage(usage: Any) -> dict[str, int | bool | None]:

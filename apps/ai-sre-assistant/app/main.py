@@ -1,6 +1,6 @@
 from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from pydantic import BaseModel, Field
 
 from app.analyzer import analyze_logs
@@ -8,6 +8,7 @@ from app.llm import analyze_with_llm, cost_controls_summary, load_config
 from app.log_reader import get_log_path, read_recent_logs
 from app.metrics_analyzer import analyze_metrics, combined_incident_analysis
 from app.metrics_reader import fetch_metrics_text, get_metrics_url, parse_prometheus_text
+from app.provider_metrics import PROVIDER_METRICS
 from app.redaction import redact_data, redact_text
 
 
@@ -45,6 +46,11 @@ class SummarizeIncidentRequest(BaseModel):
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "healthy", "service": "ai-sre-assistant"}
+
+
+@app.get("/metrics")
+def metrics() -> Response:
+    return Response(content=PROVIDER_METRICS.render_prometheus(), media_type="text/plain")
 
 
 @app.post("/analyze/logs")
