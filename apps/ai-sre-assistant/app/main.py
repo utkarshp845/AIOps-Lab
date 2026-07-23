@@ -4,7 +4,7 @@ from fastapi import FastAPI, Response
 from pydantic import BaseModel, Field
 
 from app.analyzer import analyze_logs
-from app.llm import analyze_with_llm, cost_controls_summary, load_config
+from app.llm import analyze_with_llm, cost_controls_summary, estimate_cost, load_config
 from app.log_reader import get_log_path, read_recent_logs
 from app.metrics_analyzer import analyze_metrics, combined_incident_analysis
 from app.metrics_reader import fetch_metrics_text, get_metrics_url, parse_prometheus_text
@@ -104,6 +104,7 @@ def summarize_incident(request: SummarizeIncidentRequest) -> dict[str, Any]:
             config=llm_config,
         )
         response["llm_telemetry"] = llm_result.telemetry
+        response["llm_cost_estimate"] = estimate_cost(llm_config, llm_result.telemetry)
         if llm_result.analysis:
             response["analysis_mode"] = "llm"
             response["llm_analysis"] = llm_result.analysis
@@ -137,6 +138,7 @@ def _analyze(question: str, max_lines: int, use_llm: bool) -> dict[str, Any]:
             config=llm_config,
         )
         response["llm_telemetry"] = llm_result.telemetry
+        response["llm_cost_estimate"] = estimate_cost(llm_config, llm_result.telemetry)
         if llm_result.analysis:
             response["analysis_mode"] = "llm"
             response["llm_analysis"] = llm_result.analysis

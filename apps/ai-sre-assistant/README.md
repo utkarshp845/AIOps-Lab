@@ -63,6 +63,8 @@ OPENAI_BASE_URL=https://api.openai.com/v1
 MODEL_NAME=your_model
 LLM_MAX_LOG_ENTRIES=50
 LLM_MAX_PROMPT_CHARS=12000
+LLM_INPUT_USD_PER_MILLION_TOKENS=
+LLM_OUTPUT_USD_PER_MILLION_TOKENS=
 DEMO_SERVICE_METRICS_URL=http://localhost:8000/metrics
 ```
 
@@ -85,7 +87,7 @@ See `../../docs/16-cost-optimization.md` for the Day 3 cost optimization guide.
 
 When `use_llm=true`, LLM-enabled API responses include `llm_telemetry` with bounded provider and model labels, configuration and attempt state, success or fallback outcome, request latency, and normalized token usage when the provider reports it.
 
-The telemetry object never includes prompts, incident evidence, credentials, provider base URLs, generated output, or user and incident identifiers. It is per-request metadata, not a persistent usage ledger, billing record, or cost estimate.
+The telemetry object never includes prompts, incident evidence, credentials, provider base URLs, generated output, or user and incident identifiers. It is per-request metadata, not a persistent usage ledger or billing record. When both deployment-owned input/output prices and provider-reported token directions are available, responses also include an `llm_cost_estimate`; otherwise its cost fields remain explicitly unknown.
 
 `GET /metrics` exposes privacy-safe in-memory aggregates for analysis outcomes, provider request latency, deterministic fallbacks, and provider-reported input/output tokens. Labels are limited to the configured provider/model and fixed outcome, reason, and direction enums. These process-local counters reset when the assistant restarts.
 

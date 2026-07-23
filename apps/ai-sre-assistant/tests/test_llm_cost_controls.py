@@ -1,8 +1,9 @@
 import json
+from decimal import Decimal
 
 from fastapi.testclient import TestClient
 
-from app.llm import LLMConfig, analyze_with_llm, build_user_prompt, cost_controls_summary, load_config
+from app.llm import LLMConfig, analyze_with_llm, build_user_prompt, cost_controls_summary, estimate_cost, load_config
 from app.main import app
 
 
@@ -214,3 +215,91 @@ def test_summarize_incident_reports_same_unconfigured_telemetry(tmp_path, monkey
     assert telemetry["outcome"] == "not_configured"
     assert telemetry["attempted"] is False
     assert telemetry["fallback_reason"] == "provider_not_configured"
+
+
+def test_estimate_cost_uses_operator_pricing_and_reported_usage():
+    config = LLMConfig(
+        provider="openai",
+        api_key="provider-key",
+        base_url="https://example.invalid/v1",
+        model="test-model",
+        input_usd_per_million_tokens=Decimal("0.15"),
+        output_usd_per_million_tokens=Decimal("0.60"),
+    )
+
+    estimate = estimate_cost(
+        config,
+        {
+            "usage": {
+                "input_tokens": 120,
+                "output_tokens": 30,
+                "total_tokens": 150,
+            }
+        },
+    )
+
+    assert estimate == {
+        "currency": "USD",
+        "pricing_configured": True,
+        "input_usd_per_million_tokens": "0.15",
+        "output_usd_per_million_tokens": "0.60",
+        "estimate_available": True,
+        "estimated_input_cost_usd": "0.00001800",
+        "estimated_output_cost_usd": "0.00001800",
+        "estimated_total_cost_usd": "0.00003600",
+        "unavailable_reason": None,
+    }
+
+
+def test_estimate_cost_keeps_missing_prices_and_token_directions_unknown():
+    config = LLMConfig(
+        provider="openai",
+        api_key="provider-key",
+        base_url="https://example.invalid/v1",
+        model="test-model",
+        input_usd_per_million_tokens=Decimal("0.15"),
+    )
+
+    missing_pricing = estimate_cost(config, {"usage": {"input_tokens": 120, "output_tokens": 30}})
+    assert missing_pricing["estimate_available"] is False
+    assert missing_pricing["unavailable_reason"] == "pricing_not_configured"
+    assert missing_pricing["estimated_total_cost_usd"] is None
+
+    complete_pricing = LLMConfig(
+        provider="openai",
+        api_key="provider-key",
+        base_url="https://example.invalid/v1",
+        model="test-model",
+        input_usd_per_million_tokens=Decimal("0.15"),
+        output_usd_per_million_tokens=Decimal("0.60"),
+    )
+    missing_usage = estimate_cost(complete_pricing, {"usage": {"total_tokens": 150}})
+    assert missing_usage["estimate_available"] is False
+    assert missing_usage["unavailable_reason"] == "incomplete_token_usage"
+
+
+def test_load_config_ignores_malformed_or_negative_pricing(monkeypatch):
+    monkeypatch.setenv("LLM_INPUT_USD_PER_MILLION_TOKENS", "NaN")
+    monkeypatch.setenv("LLM_OUTPUT_USD_PER_MILLION_TOKENS", "-1")
+
+    config = load_config()
+
+    assert config.input_usd_per_million_tokens is None
+    assert config.output_usd_per_million_tokens is None
+
+
+def test_api_response_includes_unknown_cost_estimate_when_pricing_is_not_configured(tmp_path, monkeypatch):
+    log_file = tmp_path / "demo-service.log"
+    log_file.write_text('{"level":"INFO","message":"ok","status_code":200}\n', encoding="utf-8")
+    monkeypatch.setenv("DEMO_SERVICE_LOG_PATH", str(log_file))
+    monkeypatch.setenv("LLM_PROVIDER", "none")
+    monkeypatch.delenv("LLM_INPUT_USD_PER_MILLION_TOKENS", raising=False)
+    monkeypatch.delenv("LLM_OUTPUT_USD_PER_MILLION_TOKENS", raising=False)
+
+    response = client.post("/ask", json={"question": "What happened?", "use_llm": True})
+
+    assert response.status_code == 200
+    estimate = response.json()["llm_cost_estimate"]
+    assert estimate["estimate_available"] is False
+    assert estimate["unavailable_reason"] == "pricing_not_configured"
+    assert estimate["estimated_total_cost_usd"] is None

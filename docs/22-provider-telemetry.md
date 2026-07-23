@@ -1,6 +1,6 @@
 # Provider Telemetry Contract
 
-Week 5, Days 1 and 2 establish privacy-safe per-request metadata and process-local aggregate metrics for optional LLM calls.
+Week 5, Days 1 through 3 establish privacy-safe per-request metadata, process-local aggregate metrics, and explicit per-call cost estimates for optional LLM calls.
 
 The assistant already bounded prompts and fell back to deterministic analysis. The missing foundation was a consistent way to answer: which provider path was selected, was a request attempted, did it succeed, how long did it take, did the provider report token usage, and did the deterministic fallback protect the user?
 
@@ -29,7 +29,7 @@ When `use_llm=true`, `/ask`, `/analyze/logs`, and `/summarize-incident` include 
 }
 ```
 
-This API contract is per request. Day 2 also aggregates its bounded fields as Prometheus text; neither surface is a persistent usage ledger, billing record, or cost estimate.
+This API contract is per request. Day 2 also aggregates its bounded fields as Prometheus text. Day 3 adds a per-call `llm_cost_estimate` only when deployment-owned prices and provider-reported input/output token counts are both available. None of these surfaces is a persistent usage ledger or billing record.
 
 ## Field Semantics
 
@@ -47,6 +47,30 @@ This API contract is per request. Day 2 also aggregates its bounded fields as Pr
 | `usage.input_tokens` | Normalized `prompt_tokens`, or `null` when unavailable. |
 | `usage.output_tokens` | Normalized `completion_tokens`, or `null` when unavailable. |
 | `usage.total_tokens` | Provider total, or the sum of valid input and output counts when both exist. |
+
+## Cost Estimate Contract
+
+When `use_llm=true`, the response also includes `llm_cost_estimate`. Pricing is supplied by the deployment; the project never fetches or embeds provider price lists because those prices are model-, region-, and time-dependent.
+
+```json
+{
+  "llm_cost_estimate": {
+    "currency": "USD",
+    "pricing_configured": true,
+    "input_usd_per_million_tokens": "0.15",
+    "output_usd_per_million_tokens": "0.60",
+    "estimate_available": true,
+    "estimated_input_cost_usd": "0.00001800",
+    "estimated_output_cost_usd": "0.00001800",
+    "estimated_total_cost_usd": "0.00003600",
+    "unavailable_reason": null
+  }
+}
+```
+
+Set `LLM_INPUT_USD_PER_MILLION_TOKENS` and `LLM_OUTPUT_USD_PER_MILLION_TOKENS` to non-negative USD values per million provider-reported tokens. Both values are optional and default to unknown. The estimate is available only when both prices and both token directions are reported; otherwise every estimated cost remains `null` and `unavailable_reason` is `pricing_not_configured` or `incomplete_token_usage`.
+
+Cost values are decimal strings to avoid floating-point ambiguity. They are estimates for one provider call, not invoices, budgets, durable metering, or customer-level billing attribution.
 
 Unknown, negative, boolean, or malformed token values are treated as unavailable. Providers may omit usage; omission does not turn a successful analysis into a failure.
 
@@ -143,10 +167,17 @@ Do not attach customer identifiers to future Prometheus labels. Per-team billing
 - The assistant exposes the contract as Prometheus text at `GET /metrics`.
 - Aggregation, histogram, fallback, token, malformed-value, privacy, and endpoint behavior have deterministic tests.
 
+## Day 3 Definition Of Done
+
+- Input and output pricing are explicit deployment configuration, never a hard-coded or fetched provider price table.
+- Estimates require both valid prices and both provider-reported token directions.
+- Missing, malformed, partial, or unavailable inputs remain unknown rather than becoming zero cost.
+- Decimal-string cost values avoid floating-point ambiguity.
+- API, configuration parsing, incomplete usage, and privacy behavior have deterministic tests.
+
 ## Remaining Week 5 Sequence
 
-1. Define explicit model pricing inputs and estimated cost metadata without hard-coding unstable prices.
-2. Join provider outcomes and cost with evaluation results to calculate cost per successful evaluated analysis.
-3. Add a local comparison report across deterministic and configured provider paths.
-4. Exercise provider failure and fallback behavior end to end.
-5. Close the week with an exit-gate review against the technical and commercialization roadmaps.
+1. Join provider outcomes and cost with evaluation results to calculate cost per successful evaluated analysis.
+2. Add a local comparison report across deterministic and configured provider paths.
+3. Exercise provider failure and fallback behavior end to end.
+4. Close the week with an exit-gate review against the technical and commercialization roadmaps.

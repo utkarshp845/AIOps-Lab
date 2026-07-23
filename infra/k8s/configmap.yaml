@@ -17,3 +17,6 @@ data:
   # Bound optional provider prompt size so local experiments stay predictable.
   LLM_MAX_LOG_ENTRIES: "50"
   LLM_MAX_PROMPT_CHARS: "12000"
+  # Optional deployment-owned prices in USD per one million tokens. Keep blank when unknown.
+  LLM_INPUT_USD_PER_MILLION_TOKENS: ""
+  LLM_OUTPUT_USD_PER_MILLION_TOKENS: ""

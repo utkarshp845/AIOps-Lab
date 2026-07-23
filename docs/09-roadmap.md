@@ -45,7 +45,7 @@ The [commercialization roadmap](21-commercialization-roadmap.md) runs alongside 
 
 - Day 1 - complete: expose a bounded per-call contract for provider/model identity, request latency, token usage, outcome, and deterministic fallback without storing sensitive content.
 - Day 2 - complete: add aggregate counters and latency distributions with bounded labels.
-- Define explicit pricing inputs and estimated cost metadata without hard-coding unstable provider prices.
+- Day 3 - complete: accept explicit deployment-owned pricing inputs and return per-call estimated cost metadata only when prices and token directions are known.
 - Join provider usage and cost with evaluation outcomes.
 - Calculate cost per successful evaluated analysis.
 

@@ -178,7 +178,7 @@ You should see the assistant report intentionally generated 500s, latency spikes
 - Week 2: observability basics, metrics, dashboards, structured logging, incident examples.
 - Week 3: Kubernetes manifests, operations, config/secrets, probes/resources, incident debugging, production next steps.
 - Week 4: security hardening, cost optimization, evaluation, production observability, advanced serving decisions, and a release-gated production-readiness review.
-- Week 5: privacy-safe provider identity, latency, usage, outcome, fallback, and cost telemetry.
+- Week 5: privacy-safe provider identity, latency, usage, outcome, fallback, and deployment-owned cost estimates.
 - Week 6: a larger versioned evaluation corpus with machine-readable CI regression reports.
 - Week 7: an optional OpenTelemetry signal path plus one owned alert-to-runbook exercise.
 - Week 8: a provider-versus-private-endpoint benchmark and an evidence-backed build-versus-buy decision.

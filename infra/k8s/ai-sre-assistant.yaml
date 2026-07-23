@@ -52,6 +52,16 @@ spec:
                 configMapKeyRef:
                   name: aiops-lab-config
                   key: LLM_MAX_PROMPT_CHARS
+            - name: LLM_INPUT_USD_PER_MILLION_TOKENS
+              valueFrom:
+                configMapKeyRef:
+                  name: aiops-lab-config
+                  key: LLM_INPUT_USD_PER_MILLION_TOKENS
+            - name: LLM_OUTPUT_USD_PER_MILLION_TOKENS
+              valueFrom:
+                configMapKeyRef:
+                  name: aiops-lab-config
+                  key: LLM_OUTPUT_USD_PER_MILLION_TOKENS
             - name: DEMO_SERVICE_LOG_PATH
               valueFrom:
                 configMapKeyRef:

@@ -2,6 +2,7 @@ import json
 import os
 import time
 from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
 from typing import Any
 
 import httpx
@@ -15,6 +16,7 @@ DEFAULT_LLM_MAX_LOG_ENTRIES = 50
 DEFAULT_LLM_MAX_PROMPT_CHARS = 12000
 TRUNCATION_MARKER = "\n...[truncated by LLM cost controls]\n"
 MAX_TELEMETRY_LABEL_CHARS = 100
+COST_ESTIMATE_QUANTUM = Decimal("0.00000001")
 
 
 @dataclass(frozen=True)
@@ -25,6 +27,8 @@ class LLMConfig:
     model: str
     max_log_entries: int = DEFAULT_LLM_MAX_LOG_ENTRIES
     max_prompt_chars: int = DEFAULT_LLM_MAX_PROMPT_CHARS
+    input_usd_per_million_tokens: Decimal | None = None
+    output_usd_per_million_tokens: Decimal | None = None
 
 
 @dataclass(frozen=True)
@@ -44,6 +48,8 @@ def load_config() -> LLMConfig:
         model=os.getenv("MODEL_NAME", "gpt-4o-mini").strip(),
         max_log_entries=_read_positive_int("LLM_MAX_LOG_ENTRIES", DEFAULT_LLM_MAX_LOG_ENTRIES),
         max_prompt_chars=_read_positive_int("LLM_MAX_PROMPT_CHARS", DEFAULT_LLM_MAX_PROMPT_CHARS),
+        input_usd_per_million_tokens=_read_non_negative_decimal("LLM_INPUT_USD_PER_MILLION_TOKENS"),
+        output_usd_per_million_tokens=_read_non_negative_decimal("LLM_OUTPUT_USD_PER_MILLION_TOKENS"),
     )
 
 
@@ -60,6 +66,45 @@ def cost_controls_summary(config: LLMConfig) -> dict[str, int]:
         "max_log_entries": config.max_log_entries,
         "max_prompt_chars": config.max_prompt_chars,
     }
+
+
+def estimate_cost(config: LLMConfig, telemetry: dict[str, Any]) -> dict[str, Any]:
+    """Return a per-call estimate only when both prices and token directions are known."""
+    input_price = config.input_usd_per_million_tokens
+    output_price = config.output_usd_per_million_tokens
+    usage = telemetry.get("usage", {})
+    input_tokens = _non_negative_int(usage.get("input_tokens")) if isinstance(usage, dict) else None
+    output_tokens = _non_negative_int(usage.get("output_tokens")) if isinstance(usage, dict) else None
+
+    estimate = {
+        "currency": "USD",
+        "pricing_configured": input_price is not None and output_price is not None,
+        "input_usd_per_million_tokens": _decimal_string(input_price),
+        "output_usd_per_million_tokens": _decimal_string(output_price),
+        "estimate_available": False,
+        "estimated_input_cost_usd": None,
+        "estimated_output_cost_usd": None,
+        "estimated_total_cost_usd": None,
+        "unavailable_reason": None,
+    }
+    if not estimate["pricing_configured"]:
+        estimate["unavailable_reason"] = "pricing_not_configured"
+        return estimate
+    if input_tokens is None or output_tokens is None:
+        estimate["unavailable_reason"] = "incomplete_token_usage"
+        return estimate
+
+    input_cost = (Decimal(input_tokens) * input_price / Decimal(1_000_000)).quantize(COST_ESTIMATE_QUANTUM)
+    output_cost = (Decimal(output_tokens) * output_price / Decimal(1_000_000)).quantize(COST_ESTIMATE_QUANTUM)
+    estimate.update(
+        {
+            "estimate_available": True,
+            "estimated_input_cost_usd": _decimal_string(input_cost),
+            "estimated_output_cost_usd": _decimal_string(output_cost),
+            "estimated_total_cost_usd": _decimal_string(input_cost + output_cost),
+        }
+    )
+    return estimate
 
 
 def analyze_with_llm(
@@ -193,6 +238,21 @@ def _read_positive_int(name: str, default: int) -> int:
     except ValueError:
         return default
     return value if value > 0 else default
+
+
+def _read_non_negative_decimal(name: str) -> Decimal | None:
+    raw_value = os.getenv(name, "").strip()
+    if not raw_value:
+        return None
+    try:
+        value = Decimal(raw_value)
+    except InvalidOperation:
+        return None
+    return value if value.is_finite() and value >= 0 else None
+
+
+def _decimal_string(value: Decimal | None) -> str | None:
+    return format(value, "f") if value is not None else None
 
 
 def _truncate_text(value: str, max_chars: int) -> tuple[str, bool]:

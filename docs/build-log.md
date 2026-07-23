@@ -754,3 +754,30 @@ What comes next:
 - Calculate estimated cost metadata from reported usage.
 - Join cost and provider outcomes with evaluation results.
 - Report cost per successful evaluated analysis.
+
+
+## Week 5, Day 3 - Provider Cost Estimates
+
+Today I made the provider telemetry contract cost-aware without turning the lab into a billing system.
+
+Day 1 exposed the outcome and usage of one provider attempt. Day 2 made aggregate reliability and token trends scrapeable. Day 3 turns operator-supplied prices and provider-reported token directions into an honest per-call estimate.
+
+What changed:
+
+- Added optional input and output price configuration in USD per million tokens.
+- Returned decimal-string `llm_cost_estimate` metadata from every LLM-enabled API path.
+- Kept estimates unavailable when either price or either token direction is missing, malformed, or unknown.
+- Wired pricing configuration through local environment files, Docker Compose, and the Kubernetes ConfigMap/Deployment.
+- Added deterministic tests for arithmetic, malformed pricing, incomplete usage, and API unknown states.
+- Updated the provider telemetry contract, roadmap, and assistant documentation.
+
+Why it matters:
+
+Token counts alone do not tell a team what one enriched analysis costs. A small, explicit estimate lets operators compare provider paths later without pretending the project owns a durable billing ledger or that static provider prices are universally correct.
+
+Key lessons:
+
+- Price inputs are deployment-owned configuration because provider prices change.
+- Unknown usage and unknown prices must remain unknown, never silently become zero.
+- Currency values should use decimal representations, not floating-point values.
+- Cost per successful evaluated analysis belongs in the next step, where quality outcomes can be joined deliberately.
