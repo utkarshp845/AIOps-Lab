@@ -70,7 +70,7 @@ Before enabling an external provider:
 
 This is a focused pattern-based control, not a complete data loss prevention system.
 
-It may miss unknown credential formats, secrets split across fields, encoded values, private customer data, or organization-specific identifiers. It may also hide a non-secret value that happens to look like a token.
+It may miss unknown credential formats, secrets split across fields, encoded values, private operational data, or organization-specific identifiers. It may also hide a non-secret value that happens to look like a token.
 
 Redaction does not:
 

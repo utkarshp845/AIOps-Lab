@@ -56,21 +56,6 @@ This starter suite is intentionally small. It does not prove that the assistant 
 
 As the assistant grows, add real sanitized incidents, adversarial cases, provider/model comparisons, human review, latency measurements, token usage, and versioned acceptance thresholds.
 
-## From Open Source To A Paid Product
-
-The open-source value is a transparent local assistant, a public evaluation method, and fixtures that anyone can inspect or extend. Keeping that foundation open builds trust and makes the learning lab genuinely useful.
-
-Monetization should attach to the recurring work teams do around evaluation:
-
-- Hosted evaluation runs with history and regression trends.
-- Private, organization-specific incident datasets with access controls.
-- CI release gates and alerts when assistant quality drops.
-- Model and provider comparisons across quality, latency, and cost.
-- Shared review workflows for SRE, platform, security, and compliance teams.
-- Audit-ready reports that show which version passed which safety rules.
-
-That product direction reinforces the user outcome: teams should be able to adopt an operational assistant because they can measure and govern it, not because a demo response looked impressive once.
-
 ## Next Steps
 
 - Keep these deterministic cases in the normal test suite and CI release gate.

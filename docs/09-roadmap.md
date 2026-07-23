@@ -1,6 +1,6 @@
 # Roadmap
 
-This is the canonical technical execution order for AIOps Lab. Weeks 1-4 are the completed learning foundation, Weeks 5-8 are the next measurement cycle, and later infrastructure remains gated by evidence and named operational ownership.
+This is the canonical technical execution order for Reliability Lab. Each week adds one measurable capability while keeping the default path laptop-friendly and dependency-light.
 
 ## Week 1 - Local Learning Lab
 
@@ -37,10 +37,6 @@ This is the canonical technical execution order for AIOps Lab. Weeks 1-4 are the
 - Optional advanced serving roadmap: vLLM, Triton, Ray, KServe, and GPU scheduling.
 - Production-readiness review with local and CI release gates.
 
-## Commercialization Track
-
-The [commercialization roadmap](21-commercialization-roadmap.md) runs alongside the technical weeks: audience first, a design-partner wedge second, and paid tiers third. Completing a local technical week does not bypass its customer-discovery or phase-exit gates.
-
 ## Week 5 - Provider Telemetry
 
 - Day 1 - complete: expose a bounded per-call contract for provider/model identity, request latency, token usage, outcome, and deterministic fallback without storing sensitive content.
@@ -49,7 +45,7 @@ The [commercialization roadmap](21-commercialization-roadmap.md) runs alongside 
 - Join provider usage and cost with evaluation outcomes.
 - Calculate cost per successful evaluated analysis.
 
-See [Provider Telemetry Contract](22-provider-telemetry.md) for the Day 1 per-request contract, Day 2 aggregate metrics, privacy boundary, and remaining-week sequence.
+See [Provider Telemetry Contract](22-provider-telemetry.md) for the per-request contract, aggregate metrics, privacy boundary, and remaining-week sequence.
 
 **Exit gate:** provider usage, reliability, and cost can be compared with evaluation outcomes without storing prompts, incident evidence, credentials, endpoints, or generated content.
 
@@ -76,13 +72,13 @@ See [Provider Telemetry Contract](22-provider-telemetry.md) for the Day 1 per-re
 - Run the same evaluation corpus against deterministic, managed-provider, and OpenAI-compatible private endpoints.
 - Measure quality, latency, token usage, fallbacks, throughput, and cost per successful evaluated analysis.
 - Test representative input sizes, concurrency, and burst behavior.
-- Record a build-versus-buy decision before adding GPU infrastructure.
+- Record an evidence-backed provider-versus-private-endpoint decision before adding GPU infrastructure.
 
 **Exit gate:** evidence supports continuing with a provider or starting one bounded private-model experiment.
 
-## Internal Pilot Phase
+## Internal Deployment Readiness
 
-Begin only after the Week 5-8 measurement loop works and the commercialization roadmap has reached the design-partner phase with named owners.
+Begin only after the Week 5-8 measurement loop works and named maintainers own the operational controls.
 
 - Authentication, service identity, and role-based access.
 - Managed secrets, rotation, artifact pinning, and supply-chain scanning.
@@ -91,7 +87,7 @@ Begin only after the Week 5-8 measurement loop works and the commercialization r
 - Initial SLOs, routed alerts, rollback tests, and recovery exercises.
 - Private evaluation datasets and controlled evidence access.
 
-**Exit gate:** a sanitized internal pilot can operate with explicit ownership, access controls, measurable reliability, and a tested rollback path.
+**Exit gate:** a sanitized internal deployment can operate with explicit ownership, access controls, measurable reliability, and a tested rollback path.
 
 ## Advanced Serving Phase - Only If Earned
 
@@ -99,16 +95,16 @@ Begin only after the Week 5-8 measurement loop works and the commercialization r
 - Add an optional single-GPU vLLM example only when the Week 8 benchmark or a named deployment requirement justifies it.
 - Add GPU scheduling, quotas, utilization telemetry, queue metrics, and out-of-memory recovery tests for a real workload.
 - Introduce Ray Serve, Triton, or KServe only when its specific orchestration problem appears.
-- Consider enterprise VPC, dedicated, or on-premises packaging after customer demand is validated.
+- Consider private VPC, dedicated, or on-premises packaging only for a documented deployment requirement.
 
 The default project remains deterministic, provider-compatible, laptop-friendly, and GPU-free throughout these phases.
 
-## Longer-Term Product Backlog
+## Longer-Term Community Backlog
 
-- Hosted evaluation history and regression alerts.
-- Team collaboration and private incident datasets.
+- Versioned evaluation history and regression alerts.
+- Collaboration around private incident datasets.
 - Audit-ready exports, policy controls, and usage governance.
-- Privacy-aware product outcome telemetry.
+- Privacy-aware outcome telemetry.
 - Provider and model quality/cost comparisons over time.
 - Log, metrics, and trace backend examples using Prometheus, Grafana, compatible open-source components, or managed services.
 - Multi-environment and cloud deployment examples.

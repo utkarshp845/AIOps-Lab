@@ -12,7 +12,7 @@ from app.request_context import current_request_id
 router = APIRouter()
 
 ORDERS = {
-    "ord-1001": {"id": "ord-1001", "item": "notebook", "status": "paid"},
+    "ord-1001": {"id": "ord-1001", "item": "notebook", "status": "completed"},
     "ord-1002": {"id": "ord-1002", "item": "keyboard", "status": "packed"},
     "ord-1003": {"id": "ord-1003", "item": "monitor", "status": "shipped"},
 }

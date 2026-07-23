@@ -10,7 +10,7 @@ data:
   # Safe-to-commit application configuration. Do not put API keys here.
   DEMO_SERVICE_LOG_PATH: /shared/logs/demo-service.log
   DEMO_SERVICE_METRICS_URL: http://demo-service:8000/metrics
-  # Keep the default rule-based path enabled so the lab works without paid API access.
+  # Keep the default rule-based path enabled so the lab works without external API access.
   LLM_PROVIDER: none
   OPENAI_BASE_URL: https://api.openai.com/v1
   MODEL_NAME: gpt-4o-mini

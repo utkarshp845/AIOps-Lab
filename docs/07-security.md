@@ -4,7 +4,7 @@ Week 4 starts with security hardening basics.
 Day 2 adds focused secret handling rules and an enforced redaction boundary in the AI SRE Assistant.
 
 
-The goal is not to turn the local learning lab into an enterprise platform in one day. The goal is to name the first risks clearly and build safer habits before production.
+The goal is not to turn the local learning lab into an large production platform in one day. The goal is to name the first risks clearly and build safer habits before production.
 
 ## Threat Model
 
@@ -66,7 +66,7 @@ Do not put these values in logs:
 - API keys.
 - bearer tokens.
 - passwords.
-- private customer data.
+- private operational data.
 - cloud credentials.
 - raw authorization headers.
 
@@ -74,7 +74,7 @@ Do not put these values in logs:
 Before sharing logs publicly, redact values that identify private systems, accounts, users, or credentials.
 The assistant applies pattern-based redaction when logs are parsed and again before optional LLM requests. Questions, generated LLM text, and final API responses also pass through the same redactor.
 
-Redaction is a backup control, not proof that arbitrary logs are safe. Unknown secret formats, encoded values, and private customer data may still require manual review.
+Redaction is a backup control, not proof that arbitrary logs are safe. Unknown secret formats, encoded values, and private operational data may still require manual review.
 
 See `15-secret-handling-and-redaction.md` for the exact rules, examples, and limitations.
 

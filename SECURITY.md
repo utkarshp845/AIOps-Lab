@@ -24,7 +24,7 @@ Include:
 - expected impact.
 - whether any secret, token, or sensitive log content is involved.
 
-Do not include real API keys, tokens, credentials, private logs, or customer data in a report.
+Do not include real API keys, tokens, credentials, private logs, or sensitive data in a report.
 
 ## Public Issues And Pull Requests
 

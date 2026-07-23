@@ -2,7 +2,7 @@
 
 Week 4, Day 3 adds practical cost controls for the AI SRE Assistant.
 
-The goal is not to build a billing platform. The goal is to make the first cost drivers visible and controllable before the project introduces heavier production tooling.
+The goal is not to build a usage-accounting platform. The goal is to make the first cost drivers visible and controllable before the project introduces heavier production tooling.
 
 ## Cost Model
 
@@ -12,7 +12,7 @@ In this project, the cheapest path is the default path:
 logs / metrics -> rule-based analysis -> response
 ```
 
-That path runs locally and does not require a paid LLM provider.
+That path runs locally and does not require a external LLM provider.
 
 When an OpenAI-compatible provider is enabled, the flow changes:
 
@@ -124,7 +124,7 @@ The current implementation is intentionally lightweight:
 
 - prompt limits use characters, not exact model tokenizer counts.
 - no provider-specific pricing table is included.
-- no billing dashboard is included.
+- no usage dashboard is included.
 - no cache is included yet.
 - no per-user quota system is included yet.
 

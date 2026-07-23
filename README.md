@@ -94,11 +94,10 @@ For the assistant evaluation corpus and quality rubric, see `docs/17-assistant-e
 
 For the production observability architecture and staged migration path, see `docs/18-production-observability.md`.
 
-For the advanced model serving decision framework and commercialization path, see `docs/19-advanced-model-serving-roadmap.md`.
+For the advanced model serving decision framework, see `docs/19-advanced-model-serving-roadmap.md`.
 
 For the Week 4 release gates, readiness verdict, and next-stage priorities, see `docs/20-production-readiness-review.md`.
 
-For the phased commercialization roadmap with milestones and success metrics, see `docs/21-commercialization-roadmap.md`.
 
 For the Week 5 provider telemetry contract, aggregate metrics, and privacy boundary, see `docs/22-provider-telemetry.md`.
 
@@ -146,7 +145,6 @@ Reliability-Lab/
     18-production-observability.md
     19-advanced-model-serving-roadmap.md
     20-production-readiness-review.md
-    21-commercialization-roadmap.md
     22-provider-telemetry.md
   infra/                 # Docker, Kubernetes, and Terraform starter notes
     k8s/                 # kind-first Kubernetes manifests and walkthrough
@@ -183,7 +181,7 @@ You should see the assistant report intentionally generated 500s, latency spikes
 - Week 7: an optional OpenTelemetry signal path plus one owned alert-to-runbook exercise.
 - Week 8: a provider-versus-private-endpoint benchmark and an evidence-backed build-versus-buy decision.
 
-The technical weeks run alongside the commercialization phases; they do not bypass audience, design-partner, or willingness-to-pay gates. See `docs/09-roadmap.md` and `docs/21-commercialization-roadmap.md`.
+The technical weeks add measurable capabilities while preserving the small, local-first learning path. See `docs/09-roadmap.md`.
 
 ## Build In Public
 
@@ -196,14 +194,6 @@ This repo is designed to be built in public one small step at a time. Good updat
 - Where AI infra gets complicated and why.
 
 Start with `docs/build-log.md`.
-
-## Product Direction
-
-The open-source project makes the core learning path, safety controls, and evaluation approach transparent. That foundation should remain useful on its own.
-
-The future paid opportunity is the recurring team workflow around those foundations: hosted evaluation history, private incident datasets, release gates, model and provider comparisons, regression alerts, collaboration, and audit-ready exports. The product value is not simply generating an incident summary. It is helping teams prove that their operational assistant stays useful, safe, private, and cost-aware as their systems change.
-
-The sequenced plan — audience first, wedge product with design partners second, paid team tier third — lives in `docs/21-commercialization-roadmap.md` with per-phase milestones, success metrics, and exit criteria.
 
 ## Lessons Learned
 

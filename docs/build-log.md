@@ -485,7 +485,7 @@ What changed:
 
 Why this matters:
 
-AI infrastructure cost can grow before a billing dashboard exists. A single incident summary may be cheap, but repeated provider calls, large log windows, large prompts, expensive models, and broad refresh loops can turn the same workflow into a cost problem.
+AI infrastructure cost can grow before a usage dashboard exists. A single incident summary may be cheap, but repeated provider calls, large log windows, large prompts, expensive models, and broad refresh loops can turn the same workflow into a cost problem.
 
 The safest beginner default is still local rule-based analysis. When LLM enrichment is useful, the assistant now sends a bounded amount of evidence and tells callers which limits were active.
 
@@ -518,13 +518,13 @@ What changed:
 - Added tests for every case plus negative tests that prove missing grounding and leaked secrets are detected.
 - Added a containerized `make evaluate-assistant` workflow.
 - Documented the limits of deterministic checks and the path toward real incident datasets, human review, and model comparisons.
-- Added a product direction that keeps the core evaluation method open while reserving hosted history, private datasets, release gates, alerts, comparisons, and audit exports as potential paid workflows.
+- Documented how the public evaluation method can grow through versioned cases, private fixtures, release gates, alerts, comparisons, and audit exports.
 
 Why this matters:
 
 An AI assistant can sound plausible without being correct. Operational teams need repeatable evidence that a new prompt, model, provider, or code change did not weaken grounding, privacy, or safety.
 
-Evaluation also creates a credible path to monetization. The durable product is not a one-time incident summary. It is the system that helps teams measure quality over time, use their own private cases, block regressions, compare cost against outcomes, and produce governance evidence.
+Evaluation makes the assistant easier to improve responsibly: maintainers can measure quality over time, use private cases carefully, block regressions, compare cost against outcomes, and preserve governance evidence.
 
 Lessons learned:
 
@@ -532,7 +532,7 @@ Lessons learned:
 - A small known corpus is more useful than an impressive but unrepeatable demo.
 - Safety and privacy should be pass/fail gates, not averages that can be hidden by other scores.
 - The evaluator itself needs negative tests so teams know it catches real regressions.
-- Open evaluation builds trust; hosted team workflows create a clearer paid value proposition.
+- Open evaluation builds trust and gives contributors a repeatable way to discuss regressions.
 
 What comes next:
 
@@ -549,30 +549,30 @@ Day 4 made assistant quality testable. Day 5 asks how teams can operate, govern,
 What changed:
 
 - Added a production telemetry flow from services through a collector into metrics, logs, traces, dashboards, alerts, and controlled assistant evidence APIs.
-- Separated observability into service reliability, assistant quality and safety, and product-value signals.
+- Separated observability into service reliability and assistant quality-and-safety signals.
 - Proposed bounded assistant metric names for requests, latency, fallbacks, truncation, redaction, eval checks, and provider tokens.
-- Added dashboard ownership for platform, AI product, security, FinOps, and product teams.
+- Added dashboard ownership for platform, security, and operations maintainers.
 - Added SLI templates for service health, assistant availability, latency, evaluation safety, and provider resilience.
 - Documented alert design around user impact, ownership, runbooks, and sustained symptoms.
 - Added privacy, security, retention, sampling, cardinality, and telemetry-cost controls.
 - Compared open-source, managed, and hybrid deployment paths without changing the default local stack.
 - Added a seven-stage migration plan and production-readiness checklist.
-- Connected privacy-aware product telemetry to eventual monetization without treating sensitive incident data as analytics exhaust.
+- Documented privacy-aware telemetry boundaries without treating sensitive incident data as analytics exhaust.
 
 Why this matters:
 
 Production observability is more than installing dashboards. Teams need stable signals, clear ownership, useful alerts, controlled evidence access, and a way to connect assistant quality and provider cost to real user outcomes.
 
-This also strengthens the product direction. Paid value can grow around governed team workflows, but monetization needs evidence that users reach successful analyses, catch regressions, and adopt private evaluation and release controls. Those signals must be useful without compromising the incident data users trust the platform to protect.
+Those signals must remain useful without compromising the incident data operators trust the lab to protect.
 
 Lessons learned:
 
 - Start with operating questions and owners before choosing a backend.
-- Service health, assistant quality, and product value require different signals.
+- Service health and assistant quality require different signals.
 - Safety and privacy checks should remain release gates rather than averages.
 - Request IDs belong in logs and traces, not high-cardinality metric labels.
 - OpenTelemetry can preserve backend choice, but it does not replace retention, access, or cost decisions.
-- Product telemetry should measure user outcomes without collecting unnecessary incident content.
+- Outcome telemetry should measure useful results without collecting unnecessary incident content.
 
 What comes next:
 
@@ -582,44 +582,32 @@ What comes next:
 
 ## Week 4, Day 6 - Advanced Model Serving Roadmap
 
-Today I defined when Reliability Lab should move from managed model providers to self-hosted inference and how that decision can support a real product.
+Today I defined when Reliability Lab should move from managed model providers to self-hosted inference.
 
-Day 5 mapped the production observability path. Day 6 uses those quality, latency, usage, and cost signals to decide whether advanced serving infrastructure is justified.
+Day 5 mapped the production observability path. Day 6 uses quality, latency, usage, and cost signals to decide whether advanced serving infrastructure is justified.
 
 What changed:
 
-- Added adoption gates for privacy boundaries, model control, latency, sustained volume economics, availability control, and multi-model workloads.
+- Added adoption gates for privacy boundaries, model control, latency, sustained volume, availability control, and multi-model workloads.
 - Mapped vLLM, NVIDIA Triton Inference Server, Ray Serve, KServe, and Kubernetes GPU scheduling to the specific problems each layer solves.
-- Added a staged maturity path from deterministic analysis and managed providers to single-GPU benchmarks, production inference, shared platforms, and commercial multi-tenant operation.
+- Added a staged path from deterministic analysis and managed providers to single-GPU benchmarks and bounded production experiments.
 - Added a provider-versus-self-host benchmark plan using the same assistant evaluation corpus and safety gates.
-- Defined cost per successful evaluated analysis as the unit-economics comparison instead of GPU price or token price alone.
+- Defined cost per successful evaluated analysis as the comparison instead of GPU price or token price alone.
 - Documented GPU operating requirements, including drivers, device plugins, placement, quotas, memory behavior, autoscaling signals, cold starts, telemetry, and upgrades.
-- Added security and governance requirements for model licenses, artifacts, endpoints, tenant separation, redaction, versioning, and rollback.
-- Proposed Community, Team, Enterprise cloud, Private deployment, and Platform product tiers.
+- Added security and governance requirements for model licenses, artifacts, endpoints, isolation, redaction, versioning, and rollback.
 - Kept the default project path provider-compatible, deterministic, and GPU-free.
-- Linked the roadmap from the README, production guidance, Kubernetes next steps, and future implementation backlog.
 
 Why this matters:
 
-Self-hosted model serving can improve control, privacy, and economics for the right workload. It can also create idle GPU cost, upgrade risk, new security ownership, and an on-call burden before customer demand exists.
-
-The product should continue buying inference while that accelerates learning and satisfies users. It should build a private serving path when measured requirements, signed demand, or complete unit economics justify ownership.
-
-Monetization possibilities:
-
-- Team workflows can monetize private evaluation sets, collaboration, quotas, release gates, and quality/cost history.
-- Enterprise cloud can add SSO, RBAC, audit exports, policy controls, private connectors, regional handling, support, and reliability commitments.
-- Private deployments can serve customers that require a dedicated VPC or on-premises model endpoint.
-- A platform tier can add fleet policy, model lifecycle, routing, chargeback, capacity governance, and multi-cluster visibility.
-- The durable product boundary remains evidence governance and measurable trust, not resale of an open-source serving engine.
+Self-hosted model serving can improve control and privacy for the right workload. It can also create idle GPU cost, upgrade risk, new security ownership, and an on-call burden before a measured requirement exists.
 
 Lessons learned:
 
 - Advanced infrastructure should follow a demonstrated constraint.
-- The smallest serving stack is usually the easiest one to operate and sell honestly.
+- The smallest serving stack is usually the easiest one to operate.
 - Quality and safety must pass before throughput optimization matters.
 - Provider and self-hosted paths need the same benchmark workload and acceptance gates.
-- GPU utilization is not unit economics; engineering, reliability, and idle capacity also count.
+- GPU utilization alone does not capture engineering, reliability, and idle-capacity cost.
 - Private deployment changes who owns security controls; it does not make the system secure automatically.
 
 What comes next:
@@ -627,7 +615,7 @@ What comes next:
 - Capture provider usage and latency metadata.
 - Build a provider-versus-self-host benchmark harness.
 - Add one optional single-GPU vLLM example only after the benchmark contract is ready.
-- Validate private deployment demand before building a broad serving platform.
+- Document any future serving layer as a bounded operational experiment.
 
 ## Week 4, Day 7 - Production Readiness Review
 
@@ -639,8 +627,8 @@ What changed:
 
 - Added `make validate` as one local gate for image builds, both test suites, lint, and deterministic assistant evaluations.
 - Added the assistant evaluation runner to pull-request CI so quality, safety, and privacy regressions block the build.
-- Added a production-readiness review with separate decisions for a local lab, public learning release, sanitized internal pilot, and customer production.
-- Mapped current evidence and remaining boundaries across security, cost, quality, observability, reliability, model serving, and product direction.
+- Added a production-readiness review with separate decisions for a local lab, public learning release, sanitized internal pilot, and internet-facing production.
+- Mapped current evidence and remaining boundaries across security, cost, quality, observability, reliability, and model serving.
 - Defined promotion gates for identity, data handling, secrets, supply chain, reliability, observability, quality, cost, and deployment.
 - Prioritized a focused next 30 days around provider metadata, deeper evals, stable telemetry contracts, runbook exercises, and benchmark evidence.
 - Updated the roadmap, README, contribution checks, and evaluation guide to match the enforced release workflow.
@@ -655,7 +643,7 @@ Lessons learned:
 
 - Documentation becomes stronger when its claims are enforced in CI.
 - Privacy and safety checks should block releases rather than disappear into an average score.
-- A single readiness label is misleading; local, pilot, and customer production targets have different gates.
+- A single readiness label is misleading; local, pilot, and internet-facing targets have different gates.
 - Advanced infrastructure should follow measured requirements and operational ownership.
 - The strongest closeout is a clear decision, visible evidence, and a small next set of priorities.
 
@@ -683,22 +671,22 @@ What changed:
 - Kept missing or malformed usage honest with explicit `null` values and `reported=false`.
 - Exposed the same `llm_telemetry` contract from log analysis, questions, and incident summaries.
 - Added tests for successful usage, latency, provider failure, unconfigured fallback, both API paths, and telemetry privacy.
-- Added a provider telemetry guide with field semantics, forbidden data, customer value, and the remaining Week 5 sequence.
-- Restored the canonical Weeks 5-8 technical roadmap while preserving the audience and design-partner gates in the commercialization roadmap.
+- Added a provider telemetry guide with field semantics, forbidden data, operational value, and the remaining Week 5 sequence.
+- Restored the canonical Weeks 5-8 technical roadmap.
 
 Why this matters:
 
 A provider call should not be a black box. Teams need to know whether enrichment ran, whether it failed safely, how long it took, and whether the provider reported usage. Those facts are the foundation for comparing quality and cost later.
 
-The metadata boundary matters just as much as the fields. Prompt text, incident evidence, credentials, endpoint URLs, generated output, and customer identifiers do not belong in provider telemetry.
+The metadata boundary matters just as much as the fields. Prompt text, incident evidence, credentials, endpoint URLs, generated output, and user identifiers do not belong in provider telemetry.
 
-Customer and monetization value:
+Operational value:
 
-- Design partners can distinguish successful enrichment from silent deterministic fallback.
+- Operators can distinguish successful enrichment from silent deterministic fallback.
 - Teams can later compare provider latency and token usage with evaluated quality.
 - Cost can be measured per successful analysis instead of per token in isolation.
 - Managed and private OpenAI-compatible endpoints share the same outcome contract.
-- Completing this local contract does not skip the commercialization roadmap's discovery or design-partner gates.
+- The local contract remains useful without requiring additional platform infrastructure.
 
 Lessons learned:
 
@@ -706,7 +694,7 @@ Lessons learned:
 - Provider failure and provider-not-configured are different operational outcomes.
 - A monotonic clock is the right boundary for request duration.
 - Useful telemetry can remain small, bounded, and free of incident content.
-- Per-request metadata should come before aggregate metrics, billing ledgers, or dashboards.
+- Per-request metadata should come before aggregate metrics or dashboards.
 
 What comes next:
 
@@ -719,7 +707,7 @@ What comes next:
 
 Today I turned the per-request provider contract into privacy-safe operational aggregates.
 
-Day 1 made each provider attempt visible to its caller. Day 2 makes trends scrapeable without retaining prompts, incident evidence, generated content, customer identifiers, or arbitrary error text.
+Day 1 made each provider attempt visible to its caller. Day 2 makes trends scrapeable without retaining prompts, incident evidence, generated content, user identifiers, or arbitrary error text.
 
 What changed:
 
@@ -738,7 +726,7 @@ Why this matters:
 
 Per-request metadata helps debug one analysis. Aggregate counters and distributions reveal whether provider enrichment is reliable, fast, and consistently reporting usage across many analyses. That is the evidence needed before pricing and quality are joined later in the week.
 
-The privacy and cardinality boundaries are part of the feature. Prompts, evidence, errors, endpoints, request IDs, users, workspaces, and incidents never become labels. Process-local metrics also remain honest about their limits: they reset on restart and are not a billing ledger.
+The privacy and cardinality boundaries are part of the feature. Prompts, evidence, errors, endpoints, request IDs, users, workspaces, and incidents never become labels. Process-local metrics also remain honest about their limits: they reset on restart and are not durable usage history.
 
 Lessons learned:
 
@@ -746,7 +734,7 @@ Lessons learned:
 - Not configured is an outcome, but it is not an attempted provider request and should not enter request-latency buckets.
 - Missing token usage is unknown, not zero.
 - Configured provider/model labels are useful only with an explicit cardinality budget.
-- Operational metrics and durable customer metering are different systems with different access and retention requirements.
+- Operational metrics and durable usage history are different systems with different access and retention requirements.
 
 What comes next:
 
@@ -758,7 +746,7 @@ What comes next:
 
 ## Week 5, Day 3 - Provider Cost Estimates
 
-Today I made the provider telemetry contract cost-aware without turning the lab into a billing system.
+Today I made the provider telemetry contract cost-aware without turning the lab into a usage-accounting system.
 
 Day 1 exposed the outcome and usage of one provider attempt. Day 2 made aggregate reliability and token trends scrapeable. Day 3 turns operator-supplied prices and provider-reported token directions into an honest per-call estimate.
 
@@ -773,7 +761,7 @@ What changed:
 
 Why it matters:
 
-Token counts alone do not tell a team what one enriched analysis costs. A small, explicit estimate lets operators compare provider paths later without pretending the project owns a durable billing ledger or that static provider prices are universally correct.
+Token counts alone do not tell an operator what one enriched analysis costs. A small, explicit estimate lets operators compare provider paths later without pretending the project owns durable usage history or that static provider prices are universally correct.
 
 Key lessons:
 

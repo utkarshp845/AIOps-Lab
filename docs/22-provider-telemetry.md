@@ -29,7 +29,7 @@ When `use_llm=true`, `/ask`, `/analyze/logs`, and `/summarize-incident` include 
 }
 ```
 
-This API contract is per request. Day 2 also aggregates its bounded fields as Prometheus text. Day 3 adds a per-call `llm_cost_estimate` only when deployment-owned prices and provider-reported input/output token counts are both available. None of these surfaces is a persistent usage ledger or billing record.
+This API contract is per request. Day 2 also aggregates its bounded fields as Prometheus text. Day 3 adds a per-call `llm_cost_estimate` only when deployment-owned prices and provider-reported input/output token counts are both available. None of these surfaces is a persistent usage ledger.
 
 ## Field Semantics
 
@@ -70,7 +70,7 @@ When `use_llm=true`, the response also includes `llm_cost_estimate`. Pricing is 
 
 Set `LLM_INPUT_USD_PER_MILLION_TOKENS` and `LLM_OUTPUT_USD_PER_MILLION_TOKENS` to non-negative USD values per million provider-reported tokens. Both values are optional and default to unknown. The estimate is available only when both prices and both token directions are reported; otherwise every estimated cost remains `null` and `unavailable_reason` is `pricing_not_configured` or `incomplete_token_usage`.
 
-Cost values are decimal strings to avoid floating-point ambiguity. They are estimates for one provider call, not invoices, budgets, durable metering, or customer-level billing attribution.
+Cost values are decimal strings to avoid floating-point ambiguity. They are estimates for one provider call, not invoices, durable metering, or identity-linked usage attribution.
 
 Unknown, negative, boolean, or malformed token values are treated as unavailable. Providers may omit usage; omission does not turn a successful analysis into a failure.
 
@@ -87,13 +87,13 @@ Unknown, negative, boolean, or malformed token values are treated as unavailable
 
 The histogram uses fixed buckets from 50 milliseconds through the 30-second request timeout plus `+Inf`. Unconfigured selections increment the analysis and fallback counters but do not create a provider-request latency observation.
 
-These aggregates are intentionally in memory and reset when the assistant process restarts. Durable metering, billing attribution, retention, multi-process aggregation, and customer-level usage history remain separate production concerns.
+These aggregates are intentionally in memory and reset when the assistant process restarts. Durable metering, retention, multi-process aggregation, and identity-linked usage history remain separate production concerns.
 
 ### Label Boundary
 
 Provider and model values come only from deployment configuration, pass through redaction, and are limited to 100 characters. Outcome, fallback reason, and token direction use fixed enums. The registry maps unexpected enum values to `unknown` or `other` rather than accepting arbitrary strings.
 
-The aggregate contract never labels metrics with prompts, evidence, generated content, provider endpoints, errors, request IDs, users, workspaces, customers, or incidents. Operators should also keep the number of configured provider/model pairs within an explicit cardinality budget.
+The aggregate contract never labels metrics with prompts, evidence, generated content, provider endpoints, errors, request IDs, users, workspaces, or incidents. Operators should also keep the number of configured provider/model pairs within an explicit cardinality budget.
 
 Example:
 
@@ -135,16 +135,15 @@ Forbidden:
 
 Tests inject secrets into questions, logs, credentials, provider output, and failure messages and verify that those values never enter the telemetry object. The final API response still passes through the existing defense-in-depth redaction boundary.
 
-## Customer And Product Value
+## Operational Value
 
-This contract supports the commercialization roadmap without creating a surveillance or billing system prematurely:
+This contract helps maintainers understand provider behavior without storing sensitive content:
 
-- Design partners can see whether enrichment succeeded or silently fell back.
-- Teams can compare provider latency and token usage against evaluated quality later.
-- Product decisions can use cost per successful analysis instead of token price alone.
-- Private endpoints and managed providers can use the same normalized outcome contract.
+- Operators can distinguish successful enrichment from deterministic fallback.
+- Provider latency and token usage can be compared with evaluated quality later.
+- Managed and private OpenAI-compatible endpoints share the same normalized outcome contract.
 
-Do not attach customer identifiers to future Prometheus labels. Per-team billing, audit attribution, and durable usage history require an access-controlled event ledger with explicit retention.
+Do not attach user or workspace identifiers to Prometheus labels. Detailed audit records require an access-controlled event store with explicit retention.
 
 ## Day 1 Definition Of Done
 
@@ -180,4 +179,4 @@ Do not attach customer identifiers to future Prometheus labels. Per-team billing
 1. Join provider outcomes and cost with evaluation results to calculate cost per successful evaluated analysis.
 2. Add a local comparison report across deterministic and configured provider paths.
 3. Exercise provider failure and fallback behavior end to end.
-4. Close the week with an exit-gate review against the technical and commercialization roadmaps.
+4. Close the week with an exit-gate review against the technical roadmap.

@@ -1,83 +1,48 @@
 # Production Readiness Review
 
-Week 4, Day 7 closes the first Reliability Lab learning cycle with an explicit release decision.
+Week 4, Day 7 records what Reliability Lab is ready for today and what remains before a broader deployment.
 
-The project now demonstrates a complete local path from application signals to evidence-grounded incident analysis. That makes it ready to publish as a learning lab. It does not make the current Docker Compose or kind configuration ready for internet-facing production use.
+## Readiness Verdict
 
-## Release Decision
-
-| Target | Decision | Reason |
+| Deployment target | Verdict | Evidence and boundary |
 | --- | --- | --- |
-| Local learning lab | **Go** | The setup is reproducible, deterministic without an LLM key, documented, tested, and covered by a runnable evaluation corpus. |
-| Public open-source learning release | **Go when `make validate` passes** | Tests, lint, and assistant quality checks are enforced locally and in pull-request CI. |
-| Internal pilot with sanitized data | **Conditional** | Add environment-specific access control, centralized telemetry, secret management, ownership, and a rollback plan first. |
-| Internet-facing or customer production | **No-go today** | The lab does not yet provide production authentication, durable telemetry backends, tenant isolation, managed secrets, SLO operations, or hardened deployment automation. |
+| Local learning lab | **Go** | Docker Compose, deterministic fallback, tests, evaluation corpus, and local runbooks are available. |
+| Public learning release | **Go** | Documentation, license, contribution guidance, safety notes, and pull-request validation are present. |
+| Sanitized internal pilot | **Conditional** | Requires named owners, access controls, managed secrets, centralized telemetry, and a tested rollback path. |
+| Internet-facing production | **No-go today** | The lab does not yet provide production authentication, durable telemetry backends, tenant isolation, managed secrets, SLO operations, or hardened deployment automation. |
 
-This distinction is intentional. A strong readiness review records what the evidence supports instead of relabeling a useful lab as a production platform.
+## Current Evidence
 
-## One Release Gate
-
-Run the full local gate from the repository root:
-
-```bash
-make validate
-```
-
-It performs four checks:
-
-1. Builds both service images.
-2. Runs both pytest suites.
-3. Runs Ruff against both services.
-4. Runs the assistant evaluation corpus and fails on any grounding, usefulness, safety, privacy, or honesty regression.
-
-The CI workflow runs the same test, lint, and evaluation categories on every pull request and on pushes to `main`. No provider key or network model call is required for the evaluation gate.
-
-Formatting remains a deliberate author action:
-
-```bash
-make format
-```
-
-## Evidence Review
-
-| Readiness area | Evidence in this repository | Current boundary |
+| Area | Evidence | Remaining boundary |
 | --- | --- | --- |
-| Reproducibility | Docker Compose, kind manifests, health checks, tests, and copy-paste workflows. | Local and learning environments only. |
-| Security | Threat model, safe defaults, secret guidance, and input/output redaction tests. | Pattern redaction is not a data-loss-prevention system; production auth and policy enforcement remain future work. |
-| Cost | Deterministic default, bounded evidence windows, prompt limits, and visible cost-control metadata. | Provider token accounting, quotas, budgets, and chargeback are not implemented. |
-| Quality | Seven deterministic incident cases and a five-dimension pass/fail rubric. | The corpus is small and does not replace sanitized real incidents, human review, or provider/model evaluation. |
-| Observability | Structured logs, request correlation, Prometheus-style metrics, incident walkthroughs, and a production signal contract. | The shared file is a teaching mechanism; no collector or durable logs, metrics, and traces backend is installed. |
-| Reliability | Health/readiness endpoints, Kubernetes probes and resources, runbooks, and rollback guidance. | No measured production SLO, alert delivery, autoscaling, multi-zone design, or disaster recovery exercise. |
-| Model serving | Provider-compatible configuration and a staged vLLM, Triton, Ray Serve, KServe, and GPU decision framework. | No GPU path is needed or claimed for the default project. |
-| Product direction | Open learning core plus a governed evaluation, private deployment, and team workflow direction. | Customer discovery and measured demand must precede platform investment. |
+| Security | Redaction tests, secret-handling guidance, bounded prompts, and no-key deterministic default. | Pattern redaction is not complete data-loss prevention; production needs stronger identity and secret controls. |
+| Quality | Deterministic incident corpus, five-dimension rubric, and CI release gate. | Broader sanitized cases, versioned thresholds, and provider comparison reports remain future work. |
+| Reliability | Health checks, Compose health dependencies, Kubernetes probes, resource requests, and operations runbooks. | No multi-replica, rollback, or recovery exercise evidence yet. |
+| Observability | Structured logs, Prometheus text, provider telemetry, and a migration path. | No centralized backend, dashboard, alert ownership, or retention policy is implemented. |
+| Cost | Prompt bounds, deterministic fallback, provider usage metadata, and explicit per-call estimates. | No durable usage history or operational budget policy exists. |
+| Deployment | Docker Compose and local kind manifests. | No ingress, TLS, environment separation, artifact pinning, or deployment automation. |
 
-## Promotion Gates For A Real Pilot
+## Required Promotion Gates
 
-Do not promote the current manifests by changing only an image tag. Before an internal pilot, require named owners and evidence for these gates:
+Before a sanitized internal pilot, document and verify:
 
-- **Identity and access:** authenticate users and services; authorize access to incident evidence; audit sensitive access.
-- **Data boundary:** classify allowed evidence, prevent secrets at the source, test redaction, define retention, and document provider handling.
-- **Secrets and supply chain:** use a managed secret workflow, pin and scan deployable artifacts, and define rotation and patch ownership.
-- **Reliability:** establish baseline SLIs, choose an initial SLO, route actionable alerts, test a runbook, and prove rollback.
-- **Observability:** replace shared files with controlled collection and storage; keep evidence queries bounded and attributable.
-- **Quality:** add sanitized representative incidents, preserve privacy and safety as hard gates, and version model, prompt, corpus, and thresholds together.
-- **Cost:** capture provider identity, latency, token usage, fallback outcome, and cost per successful evaluated analysis; add budgets and quotas.
-- **Deployment:** separate environments, use production storage and networking, define backups where state exists, and test recovery.
+- Identity, authorization, and least-privilege access.
+- Managed secrets, rotation, and auditability.
+- Dependency and container artifact pinning.
+- Environment separation, ingress, and TLS.
+- Centralized logs, metrics, traces, retention, and access controls.
+- SLOs, owned alerts, rollback tests, and recovery exercises.
+- Versioned evaluation corpus, configuration, and acceptance thresholds.
+- Privacy and safety gates that block promotion on failure.
 
-Any failed privacy or safety gate is a no-go. Other exceptions need a named owner, explicit risk acceptance, a deadline, and a rollback path.
+## Next Technical Priorities
 
-## First 30 Days After This Milestone
+The next four technical weeks deepen measured contracts before adding infrastructure breadth:
 
-The next four technical weeks deepen measured contracts before adding infrastructure breadth. They match the canonical sequence in the [project roadmap](09-roadmap.md) and do not bypass the audience or design-partner gates in the [commercialization roadmap](21-commercialization-roadmap.md).
-
-| Week | Focus | Required outcome |
-| --- | --- | --- |
-| 5 | Provider telemetry | Start with the privacy-safe per-call contract, then aggregate model, latency, token usage, failure, fallback, and cost metadata and compare it with evaluation outcomes. |
-| 6 | Evaluation maturity | Expand and version sanitized and adversarial cases, produce machine-readable CI results, and preserve privacy and safety as hard gates. |
-| 7 | Production signal path | Add optional OpenTelemetry collection only after signal contracts are stable, then exercise one owned alert-to-runbook recovery flow. |
-| 8 | Provider versus private benchmark | Compare deterministic, provider, and compatible private endpoints with the same corpus and record a build-versus-buy decision. |
-
-Internal-pilot controls begin only after this measurement loop works and customer discovery supports a design-partner deployment. vLLM, Triton, Ray Serve, KServe, GPU scheduling, multi-tenancy, and paid platform features stay behind demonstrated demand and the adoption gates in the [advanced model serving roadmap](19-advanced-model-serving-roadmap.md).
+1. Provider metadata, usage, latency, and cost estimates.
+2. A larger versioned evaluation corpus with machine-readable reports.
+3. One optional telemetry collector path and an owned alert-to-runbook exercise.
+4. A benchmark across deterministic, managed-provider, and private endpoint paths.
 
 ## Day 7 Definition Of Done
 
@@ -85,5 +50,5 @@ Internal-pilot controls begin only after this measurement loop works and custome
 - Pull-request CI blocks an evaluation regression.
 - The project has an explicit go/no-go decision for each deployment target.
 - Local evidence and production gaps are visible in the same scorecard.
-- Pilot promotion gates have owners and measurable evidence requirements.
+- Promotion gates have owners and measurable evidence requirements.
 - The next 30 days prioritize instrumentation, evaluation depth, and operational proof over tool accumulation.
