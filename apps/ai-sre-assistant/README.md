@@ -124,3 +124,13 @@ Redaction covers:
 - final API responses.
 
 This is a pattern-based backup control, not a complete data loss prevention system. Keep secrets out of logs and review operational data before sharing it or enabling an external provider. See `../../docs/15-secret-handling-and-redaction.md`.
+
+## Provider Evaluation Cost Report
+
+To join the deterministic rubric with real optional-provider outcomes and estimated cost, configure the provider and prices, then run:
+
+```bash
+python -m evals.run_evals --provider-report
+```
+
+This explicit command makes one provider call per evaluation case and prints a bounded JSON report, including estimated cost per successful evaluated analysis when complete token and price data is available. It remains outside CI so the normal release gate stays offline and cost-free.

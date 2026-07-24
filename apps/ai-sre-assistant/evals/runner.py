@@ -1,8 +1,10 @@
 import json
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 
 from app.analyzer import analyze_logs
+from app.llm import LLMConfig, analyze_with_llm, estimate_cost, load_config
 from app.log_reader import read_recent_logs
 from app.redaction import REDACTED
 
@@ -26,10 +28,35 @@ def load_cases(cases_path: Path = CASES_PATH) -> list[dict[str, Any]]:
 
 
 def analyze_case(case: dict[str, Any]) -> dict[str, Any]:
+    return _analyze_case_with_logs(case)[1]
+
+
+def evaluate_provider_case(case: dict[str, Any], config: LLMConfig) -> dict[str, Any]:
+    """Evaluate one fixture and attach bounded optional-provider metadata.
+
+    The deterministic rubric remains the quality gate. Provider output is free-form
+    text, so it stays separate until the corpus can score it directly.
+    """
+    logs, output = _analyze_case_with_logs(case)
+    evaluation = evaluate_output(case, output)
+    llm_result = analyze_with_llm(
+        question=case.get("question", ""),
+        logs=logs,
+        rule_based_analysis=output,
+        config=config,
+    )
+    return {
+        **evaluation,
+        "llm_telemetry": llm_result.telemetry,
+        "llm_cost_estimate": estimate_cost(config, llm_result.telemetry),
+    }
+
+
+def _analyze_case_with_logs(case: dict[str, Any]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     fixture_name = case.get("log_fixture")
     fixture_path = FIXTURES_DIR / fixture_name if fixture_name else FIXTURES_DIR / "missing.log"
     logs = read_recent_logs(log_path=fixture_path, max_lines=100)
-    return analyze_logs(logs, question=case.get("question"))
+    return logs, analyze_logs(logs, question=case.get("question"))
 
 
 def evaluate_output(case: dict[str, Any], output: dict[str, Any]) -> dict[str, Any]:
@@ -93,6 +120,59 @@ def run_suite(cases: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     }
 
 
+def run_provider_suite(
+    cases: list[dict[str, Any]] | None = None,
+    config: LLMConfig | None = None,
+) -> dict[str, Any]:
+    """Join deterministic evaluation results with optional provider outcomes and cost.
+
+    This makes real provider calls when configured. The CLI keeps it opt-in so
+    normal deterministic CI stays offline and has no token cost.
+    """
+    config = config or load_config()
+    results = [evaluate_provider_case(case, config) for case in (cases if cases is not None else load_cases())]
+    checks_passed = sum(result["score"] for result in results)
+    checks_total = sum(result["max_score"] for result in results)
+    successful = [
+        result
+        for result in results
+        if result["passed"] and result["llm_telemetry"]["outcome"] == "success"
+    ]
+    known_costs = [
+        cost
+        for cost in (_cost_decimal(result["llm_cost_estimate"].get("estimated_total_cost_usd")) for result in successful)
+        if cost is not None
+    ]
+    costs_complete = len(known_costs) == len(successful)
+    total_cost = sum(known_costs, Decimal("0")) if costs_complete else None
+    provider_outcomes = _count_provider_outcomes(results)
+
+    if not successful:
+        cost_unavailable_reason = "no_successful_evaluated_analyses"
+    elif not costs_complete:
+        cost_unavailable_reason = "incomplete_cost_data"
+    else:
+        cost_unavailable_reason = None
+
+    return {
+        "passed": all(result["passed"] for result in results) and provider_outcomes["success"] == len(results),
+        "provider": _provider_identity(results),
+        "cases_passed": sum(result["passed"] for result in results),
+        "cases_total": len(results),
+        "checks_passed": checks_passed,
+        "checks_total": checks_total,
+        "provider_outcomes": provider_outcomes,
+        "successful_evaluated_analyses": len(successful),
+        "costed_successful_evaluated_analyses": len(known_costs),
+        "estimated_total_cost_usd": _decimal_string(total_cost),
+        "estimated_cost_per_successful_evaluated_analysis_usd": (
+            _decimal_string(total_cost / len(successful)) if total_cost is not None and successful else None
+        ),
+        "cost_unavailable_reason": cost_unavailable_reason,
+        "results": results,
+    }
+
+
 def _contains_all(values: list[Any], needles: list[str]) -> bool:
     text = " ".join(str(value) for value in values).lower()
     return all(needle.lower() in text for needle in needles)
@@ -103,3 +183,33 @@ def _contains_any(text: str, needles: tuple[str, ...] | list[str], case_sensitiv
         text = text.lower()
         needles = [needle.lower() for needle in needles]
     return any(needle in text for needle in needles)
+
+
+def _count_provider_outcomes(results: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {"success": 0, "failure": 0, "not_configured": 0}
+    for result in results:
+        outcome = result["llm_telemetry"].get("outcome")
+        if outcome in counts:
+            counts[outcome] += 1
+    return counts
+
+
+def _provider_identity(results: list[dict[str, Any]]) -> dict[str, str | None]:
+    if not results:
+        return {"provider": None, "model": None}
+    telemetry = results[0]["llm_telemetry"]
+    return {"provider": telemetry.get("provider"), "model": telemetry.get("model")}
+
+
+def _cost_decimal(value: Any) -> Decimal | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        cost = Decimal(value)
+    except InvalidOperation:
+        return None
+    return cost if cost.is_finite() and cost >= 0 else None
+
+
+def _decimal_string(value: Decimal | None) -> str | None:
+    return format(value.quantize(Decimal("0.00000001")), "f") if value is not None else None

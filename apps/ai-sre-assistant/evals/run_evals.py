@@ -1,9 +1,24 @@
-from evals.runner import RUBRIC_DIMENSIONS, run_suite
+import argparse
+import json
+
+from evals.runner import RUBRIC_DIMENSIONS, run_provider_suite, run_suite
 
 
 def main() -> int:
-    suite = run_suite()
+    parser = argparse.ArgumentParser(description="Run AI SRE Assistant evaluations.")
+    parser.add_argument(
+        "--provider-report",
+        action="store_true",
+        help="Run the corpus with optional provider enrichment and print a bounded JSON cost report.",
+    )
+    args = parser.parse_args()
 
+    if args.provider_report:
+        suite = run_provider_suite()
+        print(json.dumps(suite, indent=2, sort_keys=True))
+        return 0 if suite["passed"] else 1
+
+    suite = run_suite()
     print("AI SRE Assistant evaluation")
     print("=" * 35)
     for result in suite["results"]:

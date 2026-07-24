@@ -62,3 +62,17 @@ As the assistant grows, add real sanitized incidents, adversarial cases, provide
 - Add sanitized real-world incidents as the assistant supports more failure modes.
 - Record provider usage metadata before comparing quality against cost.
 - Version the corpus and thresholds when evaluation results become a release gate.
+
+## Provider Cost Report
+
+With a configured OpenAI-compatible provider and both operator-owned price inputs, run:
+
+```bash
+python -m evals.run_evals --provider-report
+```
+
+This makes one optional provider-enrichment call per fixture and emits a bounded JSON report. It joins the deterministic rubric result, provider outcome, and per-call cost estimate, then calculates `estimated_cost_per_successful_evaluated_analysis_usd`.
+
+A successful evaluated analysis requires a passing deterministic rubric and a successful provider response. The cost-per-success value is emitted only when every successful evaluated analysis has complete price and token data. Otherwise it is `null` with `cost_unavailable_reason`; unknown usage is never treated as zero cost. The report does not write a usage ledger or include fixture evidence, prompts, provider output, endpoints, or credentials.
+
+The normal evaluation command remains deterministic, offline, and cost-free. The provider report is deliberately opt-in and remains outside CI until a controlled provider test environment and explicit budget exist.

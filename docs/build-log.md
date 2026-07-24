@@ -769,3 +769,17 @@ Key lessons:
 - Unknown usage and unknown prices must remain unknown, never silently become zero.
 - Currency values should use decimal representations, not floating-point values.
 - Cost per successful evaluated analysis belongs in the next step, where quality outcomes can be joined deliberately.
+
+## Week 5, Day 4 - Evaluation Cost Report
+
+Today I joined deterministic assistant evaluation results to bounded optional-provider outcomes and estimated cost.
+
+What changed:
+
+- Added an explicit provider-report mode that makes one enrichment call per corpus fixture.
+- Joined each deterministic rubric result with the existing privacy-safe provider telemetry and cost-estimate contracts.
+- Calculated estimated total cost and estimated cost per successful evaluated analysis only when all successful evaluations have complete price and token data.
+- Kept incomplete cost data unknown instead of treating it as zero.
+- Kept the default deterministic evaluation command offline and cost-free for CI.
+
+Next: add a local comparison report, exercise fallback end to end, and close the Week 5 exit gate.

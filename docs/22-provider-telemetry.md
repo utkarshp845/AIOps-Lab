@@ -174,9 +174,16 @@ Do not attach user or workspace identifiers to Prometheus labels. Detailed audit
 - Decimal-string cost values avoid floating-point ambiguity.
 - API, configuration parsing, incomplete usage, and privacy behavior have deterministic tests.
 
+## Day 4 Definition Of Done
+
+- The deterministic evaluation corpus can be run with explicit optional-provider enrichment.
+- Each result joins the rubric outcome with bounded provider telemetry and the per-call cost estimate.
+- The report calculates cost per successful evaluated analysis only when every successful evaluation has complete cost data.
+- Unknown price or token information remains unknown and includes a reason rather than becoming zero.
+- Normal evaluation remains offline and cost-free; provider calls require an explicit command.
+
 ## Remaining Week 5 Sequence
 
-1. Join provider outcomes and cost with evaluation results to calculate cost per successful evaluated analysis.
-2. Add a local comparison report across deterministic and configured provider paths.
-3. Exercise provider failure and fallback behavior end to end.
-4. Close the week with an exit-gate review against the technical roadmap.
+1. Add a local comparison report across deterministic and configured provider paths.
+2. Exercise provider failure and fallback behavior end to end.
+3. Close the week with an exit-gate review against the technical roadmap.
